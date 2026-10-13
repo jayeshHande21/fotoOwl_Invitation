@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+backend/.venv/
+.venv/
+venv/
+
+# Build / cache
+frontend/.next/
+frontend/out/
+frontend/dist/
+**/__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.next/
+
+# Environment & secrets
+.env
+.env.*
+!.env.example
+
+# Data & OS
+backend/data/*.db
+.DS_Store
+*.log
+.idea/
+.vscode/
