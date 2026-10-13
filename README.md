@@ -24,9 +24,8 @@ Already expected on your machine:
 ```bash
 cd backend
 python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-python run.py
+.venv/bin/pip install -r requirements.txt
+.venv/bin/python run.py
 ```
 
 API runs at [http://localhost:8000](http://localhost:8000) · docs at [http://localhost:8000/docs](http://localhost:8000/docs)
@@ -35,12 +34,14 @@ API runs at [http://localhost:8000](http://localhost:8000) · docs at [http://lo
 
 ```bash
 cd frontend
-cp .env.local.example .env.local
+cp .env.local.example .env.local   # already created locally
 npm install
 npm run dev
 ```
 
 App runs at [http://localhost:3000](http://localhost:3000)
+
+Run backend and frontend in two terminals.
 
 ## Project layout
 
