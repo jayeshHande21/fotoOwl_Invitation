@@ -41,7 +41,8 @@ export default function CelebrationHeroCover({
       setSkipIntro(true);
       return;
     }
-    const t = window.setTimeout(() => setOpened(true), 850);
+    // Hold the closed burgundy envelope so the cover animation reads clearly
+    const t = window.setTimeout(() => setOpened(true), 1600);
     return () => window.clearTimeout(t);
   }, [compact]);
 
