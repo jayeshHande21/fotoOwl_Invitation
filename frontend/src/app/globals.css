@@ -115,3 +115,229 @@ body {
 .animate-fade-up-late {
   animation: fade-up 0.9s ease 0.24s both;
 }
+
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Classic template — scrollable screens + hero-only breeze */
+.classic-invite {
+  background: #f3f1ee;
+  color: var(--ink);
+}
+
+.classic-invite-compact {
+  min-height: 280px;
+  background: #f3f1ee;
+}
+
+.classic-scroll {
+  height: 100svh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  overscroll-behavior-y: contain;
+}
+
+.classic-screen {
+  position: relative;
+  min-height: 100svh;
+  min-height: 100dvh;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.classic-screen-hero {
+  background:
+    radial-gradient(ellipse 80% 60% at 60% 30%, #ffffff 0%, transparent 65%),
+    #f3f1ee;
+  overflow: hidden;
+}
+
+.classic-screen-details,
+.classic-screen-notes {
+  background: #f7f6f4;
+}
+
+.classic-screen-details {
+  border-top: 1px solid rgba(231, 229, 228, 0.9);
+}
+
+.classic-screen-notes {
+  border-top: 1px solid rgba(231, 229, 228, 0.9);
+}
+
+.classic-screen-inner {
+  width: 100%;
+  max-width: 40rem;
+  padding: 4.5rem 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .classic-screen-inner {
+    padding: 5rem 2rem;
+  }
+}
+
+.classic-scroll-hint {
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+  animation: classic-hint-pulse 2.2s ease-in-out infinite;
+}
+
+@keyframes classic-hint-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.85;
+    transform: translateY(4px);
+  }
+}
+
+@keyframes classic-sway-back {
+  0%,
+  100% {
+    transform: rotate(-1.6deg) translate3d(-1%, 0, 0);
+  }
+  50% {
+    transform: rotate(2deg) translate3d(1.5%, -1%, 0);
+  }
+}
+
+@keyframes classic-sway-front {
+  0%,
+  100% {
+    transform: rotate(1.2deg) translate3d(0.5%, 0, 0);
+  }
+  50% {
+    transform: rotate(-1.8deg) translate3d(-1.2%, -0.5%, 0);
+  }
+}
+
+@keyframes classic-hero-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.classic-shadow-root {
+  z-index: 0;
+}
+
+.classic-shadow-layer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  top: 0;
+  width: min(72vw, 34rem);
+  transform-origin: 20% 100%;
+  will-change: transform;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    #000 0%,
+    #000 55%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(90deg, #000 0%, #000 55%, transparent 100%);
+}
+
+.classic-shadow-img {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  background-size: contain;
+}
+
+.classic-shadow-back {
+  opacity: 0.45;
+  filter: blur(1.5px);
+  animation: classic-sway-back 8s ease-in-out infinite;
+}
+
+.classic-shadow-front {
+  opacity: 0.7;
+  animation: classic-sway-front 6.5s ease-in-out infinite;
+}
+
+.classic-shadow-root-compact .classic-shadow-layer {
+  width: 70%;
+}
+
+.classic-shadow-root-compact .classic-shadow-back {
+  opacity: 0.35;
+}
+
+.classic-shadow-root-compact .classic-shadow-front {
+  opacity: 0.55;
+}
+
+@media (min-width: 768px) {
+  .classic-shadow-layer {
+    width: min(55vw, 40rem);
+  }
+}
+
+@media (min-width: 1100px) {
+  .classic-shadow-layer {
+    width: min(48vw, 44rem);
+  }
+}
+
+.classic-hero-line {
+  animation: classic-hero-in 0.85s ease both;
+}
+
+.classic-hero-line-1 {
+  animation-delay: 0.06s;
+}
+
+.classic-hero-line-2 {
+  animation-delay: 0.16s;
+}
+
+.classic-hero-line-3 {
+  animation-delay: 0.28s;
+}
+
+.classic-hero-line-4 {
+  animation-delay: 0.4s;
+}
+
+.classic-hero-line-5 {
+  animation-delay: 0.52s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .classic-shadow-back,
+  .classic-shadow-front,
+  .classic-hero-line,
+  .classic-scroll-hint {
+    animation: none !important;
+  }
+
+  .classic-scroll {
+    scroll-behavior: auto;
+  }
+}

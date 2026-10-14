@@ -9,6 +9,7 @@ export type ExtraDetail = {
 export type Invitation = {
   id: number;
   slug: string;
+  template_id: string;
   couple_names: string;
   wedding_date: string;
   location: string;
@@ -24,6 +25,7 @@ export type InvitationPayload = {
   couple_names: string;
   wedding_date: string;
   location: string;
+  template_id?: string;
   venue_details?: string;
   video_url?: string;
   message?: string;

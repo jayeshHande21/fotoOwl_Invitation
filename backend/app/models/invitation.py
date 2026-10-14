@@ -11,6 +11,7 @@ class Invitation(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     slug: Mapped[str] = mapped_column(String(120), unique=True, index=True)
+    template_id: Mapped[str] = mapped_column(String(40), default="classic")
     couple_names: Mapped[str] = mapped_column(String(255))
     wedding_date: Mapped[str] = mapped_column(String(120))
     location: Mapped[str] = mapped_column(String(255))

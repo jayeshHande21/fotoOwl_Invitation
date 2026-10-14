@@ -20,6 +20,7 @@ class InvitationCreate(BaseModel):
     couple_names: str = Field(min_length=1, max_length=255)
     wedding_date: str = Field(min_length=1, max_length=120)
     location: str = Field(min_length=1, max_length=255)
+    template_id: str = Field(default="classic", max_length=40)
     venue_details: str | None = None
     video_url: str | None = None
     message: str | None = None
@@ -31,6 +32,7 @@ class InvitationUpdate(BaseModel):
     couple_names: str | None = Field(default=None, min_length=1, max_length=255)
     wedding_date: str | None = Field(default=None, min_length=1, max_length=120)
     location: str | None = Field(default=None, min_length=1, max_length=255)
+    template_id: str | None = Field(default=None, max_length=40)
     venue_details: str | None = None
     video_url: str | None = None
     message: str | None = None
@@ -39,6 +41,7 @@ class InvitationUpdate(BaseModel):
 class InvitationOut(BaseModel):
     id: int
     slug: str
+    template_id: str
     couple_names: str
     wedding_date: str
     location: str

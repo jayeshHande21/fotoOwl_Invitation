@@ -1,11 +1,12 @@
 import Link from "next/link";
 import type { Invitation } from "@/lib/api";
+import { getTemplate } from "@/lib/templates";
 
 export default function InvitationList({ items }: { items: Invitation[] }) {
   if (!items.length) {
     return (
       <p className="text-[var(--muted)]">
-        No invitations yet. Create one with the form above.
+        No invitations yet. Choose a template to get started.
       </p>
     );
   }
@@ -19,6 +20,7 @@ export default function InvitationList({ items }: { items: Invitation[] }) {
               {item.couple_names}
             </p>
             <p className="text-sm text-[var(--muted)]">
+              {getTemplate(item.template_id || "classic").name} ·{" "}
               {item.wedding_date} · {item.location}
             </p>
           </div>

@@ -46,6 +46,7 @@ def create_invitation(payload: InvitationCreate, db: Session = Depends(get_db)):
 
     invitation = Invitation(
         slug=slug,
+        template_id=(payload.template_id or "classic").strip(),
         couple_names=payload.couple_names.strip(),
         wedding_date=payload.wedding_date.strip(),
         location=payload.location.strip(),
