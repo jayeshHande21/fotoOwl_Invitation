@@ -86,6 +86,12 @@ export function updateInvitation(
   });
 }
 
+export function deleteInvitation(slug: string) {
+  return request<void>(`/api/invitations/${slug}`, {
+    method: "DELETE",
+  });
+}
+
 export function addExtraDetail(
   slug: string,
   payload: { label: string; value: string }

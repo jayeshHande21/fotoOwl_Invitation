@@ -30,10 +30,10 @@ export default function TemplatePreviewClient({ template }: Props) {
       className={`relative ${isScrollTemplate ? "h-svh overflow-hidden" : "min-h-screen"}`}
     >
       <header className="absolute inset-x-0 top-0 z-30 flex items-center justify-between gap-4 px-4 py-3 sm:px-6">
-        <div className="min-w-0 rounded-md bg-white/80 px-2 py-1 backdrop-blur-md">
+        <div className="min-w-0 rounded-[var(--radius-sm)] border border-[var(--line)] bg-[var(--surface)] px-3 py-1.5 shadow-[var(--shadow-soft)]">
           <Link
             href="/"
-            className="text-sm text-[var(--muted)] hover:text-[var(--ink)]"
+            className="text-sm text-[var(--muted)] transition-colors hover:text-[var(--ink)]"
           >
             ← Templates
           </Link>
@@ -44,7 +44,7 @@ export default function TemplatePreviewClient({ template }: Props) {
         <button
           type="button"
           onClick={() => setFormOpen(true)}
-          className="shrink-0 rounded-md border border-[var(--line)] bg-white/90 px-3 py-1.5 text-sm font-medium text-[var(--ink)] shadow-sm backdrop-blur-md transition hover:bg-white"
+          className="btn-secondary shrink-0 !px-3 !py-1.5 text-sm"
         >
           Update
         </button>

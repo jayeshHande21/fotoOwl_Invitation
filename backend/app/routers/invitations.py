@@ -113,6 +113,16 @@ def update_invitation(
     return invitation
 
 
+@router.delete("/{slug}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_invitation(slug: str, db: Session = Depends(get_db)):
+    invitation = db.query(Invitation).filter(Invitation.slug == slug).first()
+    if not invitation:
+        raise HTTPException(status_code=404, detail="Invitation not found")
+
+    db.delete(invitation)
+    db.commit()
+
+
 @router.post(
     "/{slug}/details",
     response_model=ExtraDetailOut,

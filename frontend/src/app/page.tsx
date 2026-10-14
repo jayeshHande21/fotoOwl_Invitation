@@ -1,3 +1,4 @@
+import BrandLogo from "@/components/BrandLogo";
 import TemplateGallery from "@/components/TemplateGallery";
 import InvitationList from "@/components/InvitationList";
 import { listInvitations } from "@/lib/api";
@@ -16,27 +17,60 @@ export default async function HomePage() {
   const invitations = await loadInvitations();
 
   return (
-    <main className="mx-auto w-full max-w-5xl px-6 py-12 sm:py-16">
-      <header className="mb-12 animate-fade-up">
-        <p className="font-display text-4xl tracking-tight text-[var(--ink)] sm:text-5xl">
-          FotoOwl
-        </p>
-        <h1 className="mt-3 max-w-2xl text-lg text-[var(--muted)] sm:text-xl">
-          Start with a template, preview it, then update the details for your
-          wedding invitation link.
-        </h1>
-      </header>
+    <main className="home-shell">
+      <div className="home-aura" aria-hidden />
+      <div className="home-frame">
+        <header className="home-nav animate-fade-up">
+          <BrandLogo priority />
+          {invitations.length > 0 ? (
+            <a href="#your-invitations" className="home-nav-chip cursor-pointer">
+              <span>Invitations</span>
+              <span className="home-nav-count">{invitations.length}</span>
+            </a>
+          ) : (
+            <span className="home-nav-aside">Studio</span>
+          )}
+        </header>
 
-      <TemplateGallery />
-
-      {invitations.length > 0 ? (
-        <section className="animate-fade-up-late mt-16 border-t border-[var(--line)] pt-10">
-          <h2 className="font-display mb-4 text-2xl text-[var(--ink)]">
-            Your invitations
-          </h2>
-          <InvitationList items={invitations} />
+        <section className="home-hero animate-fade-up">
+          <h1 className="font-display home-lead">
+            Invitation links guests will love.
+          </h1>
+          <p className="home-sub">
+            Choose a template, preview it, then personalize.
+          </p>
+          <div className="home-hero-rule" aria-hidden>
+            <span />
+            <i />
+            <span />
+          </div>
         </section>
-      ) : null}
+
+        <TemplateGallery />
+
+        {invitations.length > 0 ? (
+          <section
+            id="your-invitations"
+            className="home-invites animate-fade-up-late"
+          >
+            <div className="home-invites-head">
+              <div>
+                <h2 className="font-display home-invites-title">
+                  Your invitations
+                </h2>
+                <p className="home-invites-sub">
+                  Open, manage, or remove a link.
+                </p>
+              </div>
+              <p className="home-invites-meta">
+                {invitations.length}{" "}
+                {invitations.length === 1 ? "invitation" : "invitations"}
+              </p>
+            </div>
+            <InvitationList items={invitations} />
+          </section>
+        ) : null}
+      </div>
     </main>
   );
 }
