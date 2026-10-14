@@ -24,7 +24,10 @@ function findDetail(data: InvitationView, ...labels: string[]) {
 
 export default function ClassicWhenSection({ data }: Props) {
   const parsed = parseWeddingDate(data.wedding_date);
-  const eventDate = buildEventDate(data.wedding_date, data.venue_details);
+  const eventDate = useMemo(
+    () => buildEventDate(data.wedding_date, data.venue_details),
+    [data.wedding_date, data.venue_details],
+  );
   const ceremonyLabel =
     parseCeremonyLabel(data.venue_details) ||
     (data.venue_details.trim() || null);
@@ -73,9 +76,27 @@ export default function ClassicWhenSection({ data }: Props) {
   const [countdown, setCountdown] = useState<CountdownParts | null>(null);
 
   useEffect(() => {
-    if (!eventDate) return;
+    if (!eventDate) {
+      setCountdown(null);
+      return;
+    }
 
-    const tick = () => setCountdown(getCountdown(eventDate));
+    const tick = () => {
+      const next = getCountdown(eventDate);
+      setCountdown((prev) => {
+        if (
+          prev &&
+          prev.days === next.days &&
+          prev.hours === next.hours &&
+          prev.minutes === next.minutes &&
+          prev.done === next.done
+        ) {
+          return prev;
+        }
+        return next;
+      });
+    };
+
     tick();
     const id = window.setInterval(tick, 30_000);
     return () => window.clearInterval(id);
