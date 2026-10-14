@@ -5,6 +5,7 @@ import {
   ClassicDivider,
   ClassicSectionTitle,
 } from "@/components/templates/ClassicOrnament";
+import ClassicWhenSection from "@/components/templates/ClassicWhenSection";
 import type { InvitationView } from "@/lib/templates";
 import { videoEmbedUrl } from "@/lib/video";
 
@@ -12,25 +13,6 @@ type Props = {
   data: InvitationView;
   compact?: boolean;
 };
-
-function parseWeddingDate(date: string) {
-  const dayMatch = date.match(/\b(\d{1,2})\b/);
-  const yearMatch = date.match(/\b(20\d{2})\b/);
-  const weekdayMatch = date.match(
-    /\b(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)\b/i
-  );
-  const monthMatch = date.match(
-    /\b(January|February|March|April|May|June|July|August|September|October|November|December)\b/i
-  );
-
-  return {
-    day: dayMatch?.[1] ?? null,
-    year: yearMatch?.[1] ?? null,
-    weekday: weekdayMatch?.[1] ?? null,
-    month: monthMatch?.[1] ?? null,
-    raw: date,
-  };
-}
 
 export default function ClassicTemplate({ data, compact }: Props) {
   if (compact) {
@@ -48,10 +30,6 @@ export default function ClassicTemplate({ data, compact }: Props) {
       </div>
     );
   }
-
-  const hasExtras = data.extra_details.length > 0 || Boolean(data.video_url);
-  const parsed = parseWeddingDate(data.wedding_date);
-  const hasStructuredDate = Boolean(parsed.day && parsed.month);
 
   return (
     <div className="classic-invite classic-scroll">
@@ -85,90 +63,60 @@ export default function ClassicTemplate({ data, compact }: Props) {
         </div>
       </section>
 
-      {/* Screen 2 — When & where */}
+      {/* Screen 2 — When & where (reference style) */}
       <section className="classic-screen classic-screen-details">
         <div className="classic-soft-mark classic-soft-mark-left" aria-hidden />
         <div className="classic-soft-mark classic-soft-mark-right" aria-hidden />
-
-        <div className="classic-panel relative z-10">
-          <ClassicSectionTitle>When & where</ClassicSectionTitle>
-
-          <div className="mt-10 flex flex-1 flex-col items-center justify-center text-center sm:mt-12">
-            {hasStructuredDate ? (
-              <div>
-                {parsed.weekday ? (
-                  <p className="font-display text-sm uppercase tracking-[0.32em] text-[var(--muted)]">
-                    {parsed.weekday}
-                  </p>
-                ) : null}
-                <p className="font-display mt-2 text-[clamp(7rem,24vw,11rem)] leading-none tracking-[-0.045em] text-[var(--ink)]">
-                  {parsed.day}
-                </p>
-                <p className="font-display mt-4 text-[clamp(1.5rem,4vw,2.15rem)] tracking-[0.06em] text-[var(--ink)]">
-                  {parsed.month}
-                  {parsed.year ? ` ${parsed.year}` : ""}
-                </p>
-              </div>
-            ) : (
-              <p className="font-display text-[clamp(1.9rem,5vw,3rem)] leading-snug text-[var(--ink)] break-words">
-                {data.wedding_date}
-              </p>
-            )}
-
-            <div className="mt-10 w-full max-w-md sm:mt-14">
-              <div className="mx-auto mb-8 h-px w-12 bg-[rgba(28,25,23,0.2)]" />
-              <p className="text-[0.7rem] uppercase tracking-[0.3em] text-[var(--muted)]">
-                Place
-              </p>
-              <p className="font-display mt-3 text-[clamp(1.65rem,4vw,2.35rem)] leading-snug text-[var(--ink)] break-words">
-                {data.location}
-              </p>
-              {data.venue_details ? (
-                <>
-                  <p className="mt-8 text-[0.7rem] uppercase tracking-[0.3em] text-[var(--muted)]">
-                    Venue
-                  </p>
-                  <p className="mx-auto mt-3 max-w-sm text-[clamp(1.05rem,2.4vw,1.25rem)] leading-relaxed text-[#57534e] break-words">
-                    {data.venue_details}
-                  </p>
-                </>
-              ) : null}
-            </div>
-          </div>
-        </div>
+        <ClassicWhenSection data={data} />
       </section>
 
-      {/* Screen 3 — Guest notes */}
+      {/* Screen 3 — Guest notes (horizontal details, video below) */}
       <section className="classic-screen classic-screen-notes">
         <div className="classic-soft-mark classic-soft-mark-left" aria-hidden />
         <div className="classic-soft-mark classic-soft-mark-right" aria-hidden />
 
-        <div className="classic-panel relative z-10">
+        <div className="classic-panel classic-panel-wide relative z-10">
           <ClassicSectionTitle>For our guests</ClassicSectionTitle>
 
-          {data.extra_details.length > 0 ? (
-            <ul className="mt-10 flex flex-1 list-none flex-col items-center justify-center gap-0 p-0 sm:mt-12">
-              {data.extra_details.map((detail, i) => (
-                <li
-                  key={detail.id ?? `${detail.label}-${i}`}
-                  className="w-full max-w-lg border-t border-[rgba(28,25,23,0.12)] py-8 text-center last:border-b sm:py-10"
-                >
-                  <p className="text-[0.7rem] uppercase tracking-[0.3em] text-[var(--muted)]">
-                    {detail.label}
-                  </p>
-                  <p className="font-display mt-3 text-[clamp(1.55rem,4vw,2.1rem)] leading-snug text-[var(--ink)] break-words">
-                    {detail.value}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="mt-12 text-center text-[var(--muted)]">
-              More guest details will appear here when you add them.
-            </p>
-          )}
+          <div className="mt-10 flex flex-1 flex-col justify-center gap-12 sm:mt-12 sm:gap-14">
+            {data.extra_details.length > 0 ? (
+              <ul
+                className={`mx-auto grid w-full list-none gap-10 p-0 ${
+                  data.extra_details.length === 1
+                    ? "max-w-md grid-cols-1"
+                    : "max-w-3xl grid-cols-1 sm:grid-cols-[minmax(14rem,1fr)_minmax(14rem,1fr)] sm:gap-0"
+                }`}
+              >
+                {data.extra_details.map((detail, i) => (
+                  <li
+                    key={detail.id ?? `${detail.label}-${i}`}
+                    className={`min-w-0 px-4 text-center sm:px-10 ${
+                      i > 0
+                        ? "border-t border-[rgba(28,25,23,0.14)] pt-10 sm:border-t-0 sm:border-l sm:pt-0"
+                        : ""
+                    }`}
+                  >
+                    <p className="text-[0.7rem] uppercase tracking-[0.3em] text-[var(--muted)]">
+                      {detail.label}
+                    </p>
+                    <p className="font-display mt-3 text-[clamp(1.5rem,3.2vw,2rem)] leading-snug text-[var(--ink)] [overflow-wrap:normal] [word-break:normal]">
+                      {detail.value}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-center text-[var(--muted)]">
+                More guest details will appear here when you add them.
+              </p>
+            )}
 
-          {hasExtras ? <VideoBlock url={data.video_url} /> : null}
+            {data.video_url ? (
+              <div className="mx-auto w-full max-w-3xl">
+                <VideoBlock url={data.video_url} />
+              </div>
+            ) : null}
+          </div>
         </div>
       </section>
     </div>
@@ -180,7 +128,7 @@ function VideoBlock({ url }: { url: string }) {
   const embed = videoEmbedUrl(url);
   if (embed) {
     return (
-      <div className="mx-auto mt-4 w-full max-w-xl sm:mt-6">
+      <div className="w-full min-w-0">
         <div className="aspect-video overflow-hidden">
           <iframe
             src={embed}
@@ -194,7 +142,7 @@ function VideoBlock({ url }: { url: string }) {
     );
   }
   return (
-    <p className="mt-8 text-center">
+    <p className="text-center lg:text-left">
       <a
         href={url}
         target="_blank"

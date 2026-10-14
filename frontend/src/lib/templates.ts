@@ -54,7 +54,7 @@ export const SAMPLE_INVITATION: InvitationView = {
     "With joy in our hearts, we invite you to celebrate our wedding day with us.",
   extra_details: [
     { label: "Dress code", value: "Festive attire" },
-    { label: "RSVP", value: "Please reply by 1 November" },
+    { label: "Reception", value: "Dinner & dancing from 7:30 PM" },
   ],
 };
 

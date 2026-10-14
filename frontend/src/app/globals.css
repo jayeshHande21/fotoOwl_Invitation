@@ -191,6 +191,29 @@ body {
   padding: 3.5rem 1rem 3rem;
 }
 
+.classic-panel-wide {
+  width: min(64rem, 92vw);
+}
+
+.classic-countdown-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 4.25rem;
+  padding: 0.7rem 0.45rem;
+  border-radius: 0.55rem;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(28, 25, 23, 0.06);
+  box-shadow: 0 4px 14px rgba(28, 25, 23, 0.04);
+}
+
+@media (min-width: 1024px) {
+  .classic-countdown-tile {
+    min-height: 4.5rem;
+  }
+}
+
 @media (min-width: 640px) {
   .classic-screen-inner {
     padding: 5rem 2rem;
