@@ -14,6 +14,41 @@ type Props = {
   compact?: boolean;
 };
 
+/** Details already surfaced on When & Where */
+const WHEN_WHERE_LABELS = /stay|hotel|accommodation|travel|shuttle|transport/i;
+
+function guestGridClass(count: number) {
+  if (count <= 1) return "max-w-md grid-cols-1";
+  if (count === 2) return "max-w-3xl grid-cols-1 sm:grid-cols-2";
+  if (count === 3) return "max-w-4xl grid-cols-1 sm:grid-cols-3";
+  return "max-w-5xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-4";
+}
+
+function itemBorders(index: number, count: number) {
+  const parts = ["min-w-0 px-4 py-5 text-center sm:px-6 lg:px-4 lg:py-4"];
+
+  if (index > 0) {
+    parts.push("border-t border-[rgba(28,25,23,0.12)]");
+  }
+
+  if (count === 2) {
+    parts.push("sm:border-t-0");
+    if (index === 1) parts.push("sm:border-l");
+  } else if (count === 3) {
+    parts.push("sm:border-t-0");
+    if (index > 0) parts.push("sm:border-l");
+  } else if (count >= 4) {
+    // 2×2 on tablet, 1×4 on laptop
+    parts.push("sm:border-t-0");
+    if (index % 2 === 1) parts.push("sm:border-l");
+    if (index >= 2) parts.push("sm:border-t");
+    parts.push("lg:border-t-0");
+    if (index > 0) parts.push("lg:border-l");
+  }
+
+  return parts.join(" ");
+}
+
 export default function ClassicTemplate({ data, compact }: Props) {
   if (compact) {
     return (
@@ -31,9 +66,13 @@ export default function ClassicTemplate({ data, compact }: Props) {
     );
   }
 
+  const guestDetails = data.extra_details.filter(
+    (d) => !WHEN_WHERE_LABELS.test(d.label),
+  );
+  const detailCount = guestDetails.length;
+
   return (
     <div className="classic-invite classic-scroll">
-      {/* Screen 1 — Hero */}
       <section className="classic-screen classic-screen-hero">
         <ClassicBotanicalShadow />
 
@@ -63,43 +102,33 @@ export default function ClassicTemplate({ data, compact }: Props) {
         </div>
       </section>
 
-      {/* Screen 2 — When & where (reference style) */}
       <section className="classic-screen classic-screen-details">
         <div className="classic-soft-mark classic-soft-mark-left" aria-hidden />
         <div className="classic-soft-mark classic-soft-mark-right" aria-hidden />
         <ClassicWhenSection data={data} />
       </section>
 
-      {/* Screen 3 — Guest notes (horizontal details, video below) */}
       <section className="classic-screen classic-screen-notes">
         <div className="classic-soft-mark classic-soft-mark-left" aria-hidden />
         <div className="classic-soft-mark classic-soft-mark-right" aria-hidden />
 
-        <div className="classic-panel classic-panel-wide relative z-10">
+        <div className="classic-panel classic-panel-wide relative z-10 justify-center">
           <ClassicSectionTitle>For our guests</ClassicSectionTitle>
 
-          <div className="mt-10 flex flex-1 flex-col justify-center gap-12 sm:mt-12 sm:gap-14">
-            {data.extra_details.length > 0 ? (
+          <div className="mt-7 flex w-full flex-1 flex-col justify-center gap-7 sm:mt-8 sm:gap-8 lg:gap-9">
+            {detailCount > 0 ? (
               <ul
-                className={`mx-auto grid w-full list-none gap-10 p-0 ${
-                  data.extra_details.length === 1
-                    ? "max-w-md grid-cols-1"
-                    : "max-w-3xl grid-cols-1 sm:grid-cols-[minmax(14rem,1fr)_minmax(14rem,1fr)] sm:gap-0"
-                }`}
+                className={`mx-auto grid w-full list-none p-0 ${guestGridClass(detailCount)}`}
               >
-                {data.extra_details.map((detail, i) => (
+                {guestDetails.map((detail, i) => (
                   <li
                     key={detail.id ?? `${detail.label}-${i}`}
-                    className={`min-w-0 px-4 text-center sm:px-10 ${
-                      i > 0
-                        ? "border-t border-[rgba(28,25,23,0.14)] pt-10 sm:border-t-0 sm:border-l sm:pt-0"
-                        : ""
-                    }`}
+                    className={itemBorders(i, detailCount)}
                   >
-                    <p className="text-[0.7rem] uppercase tracking-[0.3em] text-[var(--muted)]">
+                    <p className="text-[0.68rem] uppercase tracking-[0.28em] text-[var(--muted)]">
                       {detail.label}
                     </p>
-                    <p className="font-display mt-3 text-[clamp(1.5rem,3.2vw,2rem)] leading-snug text-[var(--ink)] [overflow-wrap:normal] [word-break:normal]">
+                    <p className="font-display mt-2.5 text-[clamp(1.2rem,2.2vw,1.55rem)] leading-snug text-[var(--ink)] [overflow-wrap:normal] [word-break:normal]">
                       {detail.value}
                     </p>
                   </li>
@@ -112,7 +141,10 @@ export default function ClassicTemplate({ data, compact }: Props) {
             )}
 
             {data.video_url ? (
-              <div className="mx-auto w-full max-w-3xl">
+              <div className="mx-auto w-full max-w-xl sm:max-w-2xl lg:max-w-[36rem]">
+                <p className="mb-2.5 text-center text-[0.65rem] uppercase tracking-[0.28em] text-[var(--muted)]">
+                  A note from us
+                </p>
                 <VideoBlock url={data.video_url} />
               </div>
             ) : null}
@@ -129,7 +161,7 @@ function VideoBlock({ url }: { url: string }) {
   if (embed) {
     return (
       <div className="w-full min-w-0">
-        <div className="aspect-video overflow-hidden">
+        <div className="aspect-video overflow-hidden rounded-sm">
           <iframe
             src={embed}
             title="Wedding video"
@@ -142,7 +174,7 @@ function VideoBlock({ url }: { url: string }) {
     );
   }
   return (
-    <p className="text-center lg:text-left">
+    <p className="text-center">
       <a
         href={url}
         target="_blank"

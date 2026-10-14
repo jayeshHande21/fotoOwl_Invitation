@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ClassicDivider } from "@/components/templates/ClassicOrnament";
 import type { InvitationView } from "@/lib/templates";
 import {
@@ -15,6 +15,13 @@ type Props = {
   data: InvitationView;
 };
 
+function findDetail(data: InvitationView, ...labels: string[]) {
+  const lower = labels.map((l) => l.toLowerCase());
+  return data.extra_details.find((d) =>
+    lower.some((l) => d.label.toLowerCase().includes(l)),
+  );
+}
+
 export default function ClassicWhenSection({ data }: Props) {
   const parsed = parseWeddingDate(data.wedding_date);
   const eventDate = buildEventDate(data.wedding_date, data.venue_details);
@@ -26,6 +33,42 @@ export default function ClassicWhenSection({ data }: Props) {
     .replace(ceremonyLabel ?? "", "")
     .replace(/^[\s·\-|]+|[\s·\-|]+$/g, "")
     .trim();
+
+  const reception = findDetail(data, "reception");
+  const travel = findDetail(data, "travel", "shuttle", "transport");
+  const stay = findDetail(data, "stay", "hotel", "accommodation");
+
+  const mapsQuery = [venueLine, placeOnly].filter(Boolean).join(", ");
+  const mapsUrl = mapsQuery
+    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapsQuery)}`
+    : null;
+
+  const schedule = useMemo(() => {
+    const items: { label: string; value: string }[] = [];
+    if (ceremonyLabel) {
+      items.push({
+        label: "Ceremony",
+        value: ceremonyLabel.replace(/^Ceremony\s+at\s+/i, "") || ceremonyLabel,
+      });
+    }
+    if (reception?.value) {
+      const timeMatch = reception.value.match(
+        /(\d{1,2}(?::\d{2})?\s*(?:AM|PM))/i,
+      );
+      items.push({
+        label: "Reception",
+        value: timeMatch?.[1] ?? reception.value,
+      });
+    }
+    if (travel?.value) {
+      const timeMatch = travel.value.match(/(\d{1,2}(?::\d{2})?\s*(?:AM|PM))/i);
+      items.push({
+        label: "Shuttle",
+        value: timeMatch ? `From ${timeMatch[1]}` : travel.value,
+      });
+    }
+    return items;
+  }, [ceremonyLabel, reception, travel]);
 
   const [countdown, setCountdown] = useState<CountdownParts | null>(null);
 
@@ -40,7 +83,7 @@ export default function ClassicWhenSection({ data }: Props) {
 
   const countdownBlock =
     countdown && !countdown.done ? (
-      <div className="classic-countdown mt-5 grid w-full max-w-[17rem] grid-cols-3 gap-2 sm:mt-6 sm:max-w-xs lg:max-w-none lg:w-[18rem]">
+      <div className="classic-countdown mt-5 grid w-full max-w-[17rem] grid-cols-3 gap-2 sm:max-w-xs lg:mt-6 lg:w-full lg:max-w-[19rem]">
         <CountdownTile value={countdown.days} label="Days" />
         <CountdownTile value={countdown.hours} label="Hours" />
         <CountdownTile value={countdown.minutes} label="Mins" />
@@ -48,130 +91,150 @@ export default function ClassicWhenSection({ data }: Props) {
     ) : null;
 
   return (
-    <div className="classic-when relative z-10 mx-auto w-full max-w-lg px-5 py-8 text-center lg:max-w-5xl lg:px-10 lg:py-6 xl:max-w-6xl">
-      <div className="hidden lg:block">
-        <p className="font-display text-sm font-medium uppercase tracking-[0.38em] text-[var(--ink)]">
-          When &amp; Where
+    <div className="classic-when relative z-10 mx-auto flex w-full max-w-lg flex-col justify-center px-5 py-8 text-center sm:px-8 lg:min-h-[min(88svh,52rem)] lg:max-w-[68rem] lg:px-12 lg:py-10 xl:max-w-[74rem]">
+      <div>
+        <p className="font-display text-[0.75rem] font-medium uppercase tracking-[0.38em] text-[var(--ink)] sm:text-sm lg:text-[0.95rem]">
+          <span className="lg:hidden">When</span>
+          <span className="hidden lg:inline">When &amp; Where</span>
         </p>
-        <ClassicDivider emphasis className="mt-3" />
+        <ClassicDivider emphasis className="mt-3 lg:mt-4" />
       </div>
 
-      <div className="flex flex-col items-center lg:hidden">
-        <p className="font-display text-[0.75rem] font-medium uppercase tracking-[0.38em] text-[var(--ink)] sm:text-sm">
-          When
-        </p>
-        <ClassicDivider emphasis className="mt-3" />
-
-        {parsed.weekday ? (
-          <p className="mt-6 text-[0.72rem] uppercase tracking-[0.34em] text-[var(--muted)]">
-            {parsed.weekday}
-          </p>
-        ) : null}
-
-        {parsed.day ? (
-          <p className="font-display mt-1 text-[clamp(5rem,20vw,7.5rem)] leading-none tracking-[-0.04em] text-[var(--ink)]">
-            {parsed.day}
-          </p>
-        ) : (
-          <p className="font-display mt-4 text-[clamp(1.8rem,5vw,2.6rem)] text-[var(--ink)]">
-            {data.wedding_date}
-          </p>
-        )}
-
-        {parsed.month ? (
-          <p className="font-display mt-2 text-[clamp(1.3rem,3.6vw,1.7rem)] tracking-[0.04em] text-[var(--ink)]">
-            {parsed.month}
-            {parsed.year ? ` ${parsed.year}` : ""}
-          </p>
-        ) : null}
-
-        {ceremonyLabel ? (
-          <p className="font-display mt-3 text-[0.95rem] italic text-[#7c6f7a]">
-            {ceremonyLabel}
-          </p>
-        ) : null}
-
-        {countdownBlock}
-
-        <div className="mt-8 w-full border-t border-[rgba(28,25,23,0.1)] pt-7">
-          <p className="text-[0.68rem] uppercase tracking-[0.32em] text-[var(--muted)]">
-            Where
-          </p>
-          <p className="font-display mt-2 text-[clamp(1.4rem,3.6vw,1.85rem)] leading-snug text-[var(--ink)]">
-            {placeOnly}
-          </p>
-          {venueLine ? (
-            <p className="mx-auto mt-1.5 max-w-sm text-[0.95rem] leading-relaxed text-[#57534e]">
-              {venueLine}
-            </p>
-          ) : null}
-        </div>
-      </div>
-
-      <div className="mt-8 hidden items-stretch gap-0 lg:grid lg:grid-cols-[1.15fr_minmax(0,1px)_0.95fr] lg:gap-0 xl:mt-10">
-        <div className="flex flex-col items-center justify-center px-6 py-2 xl:px-10">
-          <p className="text-[0.7rem] uppercase tracking-[0.32em] text-[var(--muted)]">
+      <div className="relative mt-7 grid w-full grid-cols-1 gap-8 lg:mt-9 lg:grid-cols-2 lg:items-stretch lg:gap-0 lg:text-left">
+        <div className="flex flex-col items-center lg:items-start lg:px-8 xl:px-12">
+          <p className="hidden text-[0.68rem] uppercase tracking-[0.32em] text-[var(--muted)] lg:block">
             When
           </p>
 
           {parsed.weekday ? (
-            <p className="mt-4 text-[0.72rem] uppercase tracking-[0.34em] text-[var(--muted)]">
+            <p className="mt-0 text-[0.72rem] uppercase tracking-[0.34em] text-[var(--muted)] lg:mt-4">
               {parsed.weekday}
             </p>
           ) : null}
 
-          <div className="mt-1 flex items-end gap-4">
+          <div className="mt-1 flex items-end justify-center gap-3 lg:justify-start lg:gap-4">
             {parsed.day ? (
-              <p className="font-display text-[7.5rem] leading-none tracking-[-0.04em] text-[var(--ink)] xl:text-[8.25rem]">
+              <p className="font-display text-[clamp(4.75rem,18vw,7.75rem)] leading-none tracking-[-0.04em] text-[var(--ink)]">
                 {parsed.day}
               </p>
-            ) : null}
-            <div className="mb-3 text-left">
-              {parsed.month ? (
-                <p className="font-display text-[1.65rem] leading-tight tracking-[0.02em] text-[var(--ink)] xl:text-[1.85rem]">
+            ) : (
+              <p className="font-display text-[clamp(1.8rem,5vw,2.6rem)] text-[var(--ink)]">
+                {data.wedding_date}
+              </p>
+            )}
+            {parsed.month ? (
+              <div className="mb-2 text-left">
+                <p className="font-display text-[clamp(1.25rem,3vw,1.85rem)] leading-tight tracking-[0.02em] text-[var(--ink)]">
                   {parsed.month}
-                  {parsed.year ? (
-                    <span className="mt-0.5 block text-[1.25rem] text-[var(--muted)] xl:text-[1.35rem]">
-                      {parsed.year}
-                    </span>
-                  ) : null}
                 </p>
-              ) : (
-                <p className="font-display text-2xl text-[var(--ink)]">
-                  {data.wedding_date}
-                </p>
-              )}
-            </div>
+                {parsed.year ? (
+                  <p className="mt-0.5 text-[0.95rem] tracking-[0.06em] text-[var(--muted)] lg:text-[1.1rem]">
+                    {parsed.year}
+                  </p>
+                ) : null}
+              </div>
+            ) : null}
           </div>
 
           {ceremonyLabel ? (
-            <p className="font-display mt-3 text-base italic text-[#7c6f7a]">
+            <p className="font-display mt-3 text-[0.95rem] italic text-[#7c6f7a] lg:text-base">
               {ceremonyLabel}
             </p>
           ) : null}
 
-          {countdownBlock}
+          <div className="flex w-full justify-center lg:justify-start">
+            {countdownBlock}
+          </div>
         </div>
 
         <div
-          className="mx-auto w-px self-stretch bg-[rgba(28,25,23,0.12)]"
+          className="h-px w-full bg-[rgba(28,25,23,0.1)] lg:absolute lg:inset-y-0 lg:left-1/2 lg:h-auto lg:w-px lg:-translate-x-1/2"
           aria-hidden
         />
 
-        <div className="flex flex-col items-center justify-center px-6 py-2 xl:px-10">
-          <p className="text-[0.7rem] uppercase tracking-[0.32em] text-[var(--muted)]">
+        <div className="flex flex-col items-center lg:items-start lg:justify-center lg:px-8 xl:px-12">
+          <p className="text-[0.68rem] uppercase tracking-[0.32em] text-[var(--muted)]">
             Where
           </p>
-          <p className="font-display mt-5 max-w-[16ch] text-[clamp(1.85rem,3vw,2.45rem)] leading-snug text-[var(--ink)]">
+          <p className="font-display mt-3 text-[clamp(1.45rem,3.2vw,2.35rem)] leading-snug text-[var(--ink)] lg:mt-4">
             {placeOnly}
           </p>
           {venueLine ? (
-            <p className="mt-3 max-w-[22ch] text-[1.05rem] leading-relaxed text-[#57534e]">
+            <p className="mt-2 text-[0.95rem] leading-relaxed text-[#57534e] lg:text-[1.05rem]">
               {venueLine}
             </p>
           ) : null}
+
+          {stay ? (
+            <div className="mt-5 w-full max-w-sm lg:mt-6 lg:max-w-none">
+              <p className="text-[0.62rem] uppercase tracking-[0.28em] text-[var(--muted)]">
+                {stay.label}
+              </p>
+              <p className="font-display mt-1.5 text-[1.05rem] leading-snug text-[var(--ink)] lg:text-[1.15rem]">
+                {stay.value}
+              </p>
+            </div>
+          ) : null}
+
+          {travel ? (
+            <div className="mt-4 w-full max-w-sm lg:max-w-none">
+              <p className="text-[0.62rem] uppercase tracking-[0.28em] text-[var(--muted)]">
+                {travel.label}
+              </p>
+              <p className="font-display mt-1.5 text-[1.05rem] leading-snug text-[var(--ink)] lg:text-[1.15rem]">
+                {travel.value}
+              </p>
+            </div>
+          ) : null}
+
+          {mapsUrl ? (
+            <a
+              href={mapsUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-5 inline-flex text-[0.68rem] uppercase tracking-[0.24em] text-[var(--ink)] underline decoration-[rgba(28,25,23,0.25)] underline-offset-[0.35em] transition-opacity hover:opacity-70 lg:mt-6"
+            >
+              View on map
+            </a>
+          ) : null}
         </div>
       </div>
+
+      {/* Day schedule — fills lower empty band on laptop */}
+      {schedule.length > 0 ? (
+        <div className="mt-8 border-t border-[rgba(28,25,23,0.1)] pt-6 lg:mt-10 lg:pt-8">
+          <p className="text-[0.65rem] uppercase tracking-[0.3em] text-[var(--muted)]">
+            Day schedule
+          </p>
+          <ul
+            className={`mx-auto mt-4 grid w-full list-none gap-5 p-0 sm:mt-5 ${
+              schedule.length === 1
+                ? "max-w-xs grid-cols-1"
+                : schedule.length === 2
+                  ? "max-w-xl grid-cols-1 sm:grid-cols-2"
+                  : "max-w-3xl grid-cols-1 sm:grid-cols-3"
+            }`}
+          >
+            {schedule.map((item, i) => (
+              <li
+                key={item.label}
+                className={`min-w-0 px-2 text-center ${
+                  i > 0
+                    ? "border-t border-[rgba(28,25,23,0.1)] pt-5 sm:border-t-0 sm:border-l sm:pt-0 sm:pl-5"
+                    : ""
+                }`}
+              >
+                <p className="text-[0.62rem] uppercase tracking-[0.26em] text-[var(--muted)]">
+                  {item.label}
+                </p>
+                <p className="font-display mt-2 text-[1.15rem] text-[var(--ink)] sm:text-[1.25rem]">
+                  {item.value}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
     </div>
   );
 }

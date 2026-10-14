@@ -55,6 +55,10 @@ export const SAMPLE_INVITATION: InvitationView = {
   extra_details: [
     { label: "Dress code", value: "Festive attire" },
     { label: "Reception", value: "Dinner & dancing from 7:30 PM" },
+    { label: "Stay", value: "Rooms held at The Leela Palace" },
+    { label: "Travel", value: "Complimentary shuttle from 4:00 PM" },
+    { label: "Gifts", value: "Your presence is the only gift we need" },
+    { label: "Parking", value: "Valet available at the main entrance" },
   ],
 };
 

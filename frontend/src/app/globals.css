@@ -192,7 +192,22 @@ body {
 }
 
 .classic-panel-wide {
-  width: min(64rem, 92vw);
+  width: min(72rem, 94vw);
+}
+
+@media (min-width: 1024px) {
+  .classic-panel-wide {
+    width: min(76rem, 90vw);
+    min-height: min(86svh, 52rem);
+    padding-top: 3.25rem;
+    padding-bottom: 2.75rem;
+  }
+
+  .classic-screen-details,
+  .classic-screen-notes {
+    align-items: center;
+    padding-inline: clamp(4rem, 8vw, 7rem);
+  }
 }
 
 .classic-countdown-tile {
