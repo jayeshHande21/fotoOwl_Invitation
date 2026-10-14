@@ -27,8 +27,8 @@ export const TEMPLATES: TemplateMeta[] = [
   {
     id: "garden",
     name: "Garden",
-    tagline: "Soft botanical white with sage detail",
-    accent: "#4d7c5a",
+    tagline: "Minimal butterfly announcement in soft sage",
+    accent: "#6b8f74",
   },
   {
     id: "modern",

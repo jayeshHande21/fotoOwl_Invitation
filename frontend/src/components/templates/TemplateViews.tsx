@@ -1,4 +1,5 @@
 import ClassicTemplate from "@/components/templates/ClassicTemplate";
+import GardenTemplate from "@/components/templates/GardenTemplate";
 import type { InvitationView, TemplateId } from "@/lib/templates";
 import { videoEmbedUrl } from "@/lib/video";
 
@@ -73,72 +74,6 @@ function ExtraList({
         </li>
       ))}
     </ul>
-  );
-}
-
-function GardenTemplate({
-  data,
-  compact,
-}: {
-  data: InvitationView;
-  compact?: boolean;
-}) {
-  return (
-    <div
-      className={`relative overflow-hidden bg-[#fbfcf9] ${
-        compact ? "min-h-[280px] p-5" : "min-h-full px-6 py-16 sm:py-24"
-      }`}
-    >
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-8 top-8 bottom-8 rounded-[2rem] border border-[#d7e3d4]"
-      />
-      <div className="relative mx-auto max-w-xl text-center">
-        <p
-          className={`tracking-[0.3em] text-[#4d7c5a] uppercase ${
-            compact ? "text-[10px]" : "text-xs"
-          }`}
-        >
-          Together with their families
-        </p>
-        <h1
-          className={`font-display mt-4 text-[#243528] ${
-            compact ? "text-2xl" : "mt-6 text-5xl sm:text-6xl"
-          }`}
-        >
-          {data.couple_names}
-        </h1>
-        <div
-          aria-hidden
-          className={`mx-auto my-4 h-px w-16 bg-[#4d7c5a]/40 ${
-            compact ? "my-3" : "my-8 w-24"
-          }`}
-        />
-        {!compact && data.message ? (
-          <p className="mx-auto max-w-md text-[#5f6f61]">{data.message}</p>
-        ) : null}
-        <p
-          className={`font-display text-[#243528] ${
-            compact ? "mt-3 text-base" : "mt-10 text-2xl"
-          }`}
-        >
-          {data.wedding_date}
-        </p>
-        <p className={`text-[#5f6f61] ${compact ? "mt-1 text-sm" : "mt-2 text-lg"}`}>
-          {data.location}
-        </p>
-        {!compact && data.venue_details ? (
-          <p className="mt-2 text-sm text-[#5f6f61]">{data.venue_details}</p>
-        ) : null}
-        {!compact ? (
-          <ExtraList
-            items={data.extra_details}
-            className="text-center [&_p]:text-[#5f6f61] [&_p:last-child]:text-[#243528]"
-          />
-        ) : null}
-        <VideoBlock url={data.video_url} compact={compact} />
-      </div>
-    </div>
   );
 }
 
