@@ -33,14 +33,14 @@ export const TEMPLATES: TemplateMeta[] = [
   {
     id: "modern",
     name: "Modern",
-    tagline: "Clean lines and editorial type",
-    accent: "#292524",
+    tagline: "Dappled leaf light with editorial type",
+    accent: "#1f241c",
   },
   {
     id: "celebration",
     name: "Celebration",
-    tagline: "Warm, joyful, and guest-ready",
-    accent: "#9a3412",
+    tagline: "Burgundy envelope opens to cream stationery",
+    accent: "#6b1d28",
   },
 ];
 

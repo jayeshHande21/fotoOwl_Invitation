@@ -20,7 +20,10 @@ export default function TemplatePreviewClient({ template }: Props) {
   const [formOpen, setFormOpen] = useState(false);
 
   const isScrollTemplate =
-    template.id === "classic" || template.id === "garden";
+    template.id === "classic" ||
+    template.id === "garden" ||
+    template.id === "modern" ||
+    template.id === "celebration";
 
   return (
     <div

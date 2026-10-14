@@ -35,7 +35,13 @@ export default async function InvitePage({ params }: Props) {
     extra_details: invitation.extra_details,
   };
 
-  if (templateId === "classic") {
+  const isScrollTemplate =
+    templateId === "classic" ||
+    templateId === "garden" ||
+    templateId === "modern" ||
+    templateId === "celebration";
+
+  if (isScrollTemplate) {
     return (
       <main className="h-svh overflow-hidden">
         <TemplateViews templateId={templateId} data={data} />
