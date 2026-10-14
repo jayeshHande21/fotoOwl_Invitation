@@ -19,10 +19,13 @@ export default function TemplatePreviewClient({ template }: Props) {
   const [values, setValues] = useState<InvitationView>(SAMPLE_INVITATION);
   const [formOpen, setFormOpen] = useState(false);
 
-  const isClassic = template.id === "classic";
+  const isScrollTemplate =
+    template.id === "classic" || template.id === "garden";
 
   return (
-    <div className={`relative ${isClassic ? "h-svh overflow-hidden" : "min-h-screen"}`}>
+    <div
+      className={`relative ${isScrollTemplate ? "h-svh overflow-hidden" : "min-h-screen"}`}
+    >
       <header className="absolute inset-x-0 top-0 z-30 flex items-center justify-between gap-4 px-4 py-3 sm:px-6">
         <div className="min-w-0 rounded-md bg-white/80 px-2 py-1 backdrop-blur-md">
           <Link
@@ -44,7 +47,7 @@ export default function TemplatePreviewClient({ template }: Props) {
         </button>
       </header>
 
-      <div className={isClassic ? "h-full" : "animate-fade-up"}>
+      <div className={isScrollTemplate ? "h-full" : "animate-fade-up"}>
         <TemplateViews templateId={template.id as TemplateId} data={values} />
       </div>
 

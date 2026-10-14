@@ -565,7 +565,8 @@ body {
 }
 
 .garden-screen-hero,
-.garden-screen-details {
+.garden-screen-details,
+.garden-screen-notes {
   overflow: hidden;
   background:
     radial-gradient(ellipse 90% 60% at 50% 30%, #ffffff 0%, transparent 58%),
