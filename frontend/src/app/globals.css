@@ -217,6 +217,119 @@ body {
   border-color: #571722;
 }
 
+/* Create-success toast (bottom-right) */
+.invite-toast {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 80;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  max-width: min(22.5rem, calc(100vw - 2rem));
+  padding: 0.95rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  box-shadow: var(--shadow-lift);
+  opacity: 0;
+  transform: translateY(0.75rem);
+  pointer-events: none;
+  transition:
+    opacity 220ms ease,
+    transform 220ms ease;
+}
+
+.invite-toast-visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.invite-toast-copy {
+  min-width: 0;
+  flex: 1;
+}
+
+.invite-toast-title {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.invite-toast-path {
+  margin: 0.3rem 0 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.invite-toast-error {
+  margin: 0.35rem 0 0;
+  font-size: 0.72rem;
+  color: #b42318;
+}
+
+.invite-toast-actions {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.invite-toast-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.1rem;
+  padding: 0.4rem 0.85rem;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--ease);
+}
+
+.invite-toast-btn:hover {
+  background: color-mix(in srgb, var(--accent) 88%, #30302e);
+}
+
+.invite-toast-dismiss {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.85rem;
+  height: 1.85rem;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--muted);
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background var(--ease), color var(--ease);
+}
+
+.invite-toast-dismiss:hover {
+  background: var(--surface-subtle);
+  color: var(--ink);
+}
+
+@media (max-width: 480px) {
+  .invite-toast {
+    right: 0.75rem;
+    left: 0.75rem;
+    bottom: 0.75rem;
+    max-width: none;
+  }
+}
+
 /* —— Home shell —— */
 .home-shell {
   position: relative;

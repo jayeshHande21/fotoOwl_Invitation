@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { useRouter } from "next/navigation";
+import InviteCreatedToast from "@/components/InviteCreatedToast";
 import { createInvitation } from "@/lib/api";
 
 type ExtraRow = { label: string; value: string };
@@ -9,7 +9,6 @@ type ExtraRow = { label: string; value: string };
 const emptyExtra = (): ExtraRow => ({ label: "", value: "" });
 
 export default function InvitationForm() {
-  const router = useRouter();
   const [coupleNames, setCoupleNames] = useState("");
   const [weddingDate, setWeddingDate] = useState("");
   const [location, setLocation] = useState("");
@@ -21,11 +20,15 @@ export default function InvitationForm() {
   const [extras, setExtras] = useState<ExtraRow[]>([emptyExtra()]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [createdSlug, setCreatedSlug] = useState<string | null>(null);
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     setError(null);
     setLoading(true);
+
+    // Open synchronously on click so the browser allows a new tab after await.
+    const previewTab = window.open("about:blank", "_blank");
 
     try {
       const invitation = await createInvitation({
@@ -39,9 +42,14 @@ export default function InvitationForm() {
         slug: slug || undefined,
         extra_details: extras.filter((row) => row.label && row.value),
       });
-      router.push(`/invite/${invitation.slug}`);
-      router.refresh();
+      const inviteUrl = `${window.location.origin}/invite/${invitation.slug}`;
+      if (previewTab) {
+        previewTab.opener = null;
+        previewTab.location.href = inviteUrl;
+      }
+      setCreatedSlug(invitation.slug);
     } catch (err) {
+      previewTab?.close();
       setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {
       setLoading(false);
@@ -49,7 +57,12 @@ export default function InvitationForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-6">
+    <>
+      <InviteCreatedToast
+        slug={createdSlug}
+        onDismiss={() => setCreatedSlug(null)}
+      />
+      <form onSubmit={onSubmit} className="space-y-6">
       <div className="grid gap-5 sm:grid-cols-2">
         <Field label="Couple names" required>
           <input
@@ -181,6 +194,7 @@ export default function InvitationForm() {
         {loading ? "Creating…" : "Create invitation link"}
       </button>
     </form>
+    </>
   );
 }
 

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import InviteCreatedToast from "@/components/InviteCreatedToast";
 import TemplateViews from "@/components/templates/TemplateViews";
 import UpdateFormPanel from "@/components/UpdateFormPanel";
 import {
@@ -18,6 +19,7 @@ type Props = {
 export default function TemplatePreviewClient({ template }: Props) {
   const [values, setValues] = useState<InvitationView>(SAMPLE_INVITATION);
   const [formOpen, setFormOpen] = useState(false);
+  const [createdSlug, setCreatedSlug] = useState<string | null>(null);
 
   const isScrollTemplate =
     template.id === "classic" ||
@@ -87,6 +89,12 @@ export default function TemplatePreviewClient({ template }: Props) {
         templateId={template.id as TemplateId}
         values={values}
         onChange={setValues}
+        onCreated={setCreatedSlug}
+      />
+
+      <InviteCreatedToast
+        slug={createdSlug}
+        onDismiss={() => setCreatedSlug(null)}
       />
     </div>
   );

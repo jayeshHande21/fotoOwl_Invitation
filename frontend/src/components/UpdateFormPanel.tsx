@@ -1,7 +1,6 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { createInvitation } from "@/lib/api";
 import type { InvitationView, TemplateId } from "@/lib/templates";
 
@@ -13,6 +12,7 @@ type Props = {
   templateId: TemplateId;
   values: InvitationView;
   onChange: (values: InvitationView) => void;
+  onCreated?: (slug: string) => void;
 };
 
 const emptyExtra = (): ExtraRow => ({ label: "", value: "" });
@@ -23,8 +23,8 @@ export default function UpdateFormPanel({
   templateId,
   values,
   onChange,
+  onCreated,
 }: Props) {
-  const router = useRouter();
   const [slug, setSlug] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -61,6 +61,10 @@ export default function UpdateFormPanel({
     e.preventDefault();
     setError(null);
     setLoading(true);
+
+    // Open synchronously on click so the browser allows a new tab after await.
+    const previewTab = window.open("about:blank", "_blank");
+
     try {
       const invitation = await createInvitation({
         template_id: templateId,
@@ -74,9 +78,15 @@ export default function UpdateFormPanel({
         slug: slug || undefined,
         extra_details: extras.filter((row) => row.label && row.value),
       });
-      router.push(`/invite/${invitation.slug}`);
-      router.refresh();
+      const inviteUrl = `${window.location.origin}/invite/${invitation.slug}`;
+      if (previewTab) {
+        previewTab.opener = null;
+        previewTab.location.href = inviteUrl;
+      }
+      onCreated?.(invitation.slug);
+      onClose();
     } catch (err) {
+      previewTab?.close();
       setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {
       setLoading(false);
