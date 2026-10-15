@@ -414,7 +414,7 @@ body {
 .home-template-preview-inner {
   position: absolute;
   inset: 0;
-  transform-origin: center top;
+  transform-origin: center center;
   transition: transform 380ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -492,25 +492,27 @@ body {
 }
 
 .home-invites {
-  margin-top: 3.25rem;
-  padding-top: 2.35rem;
+  margin-top: 2.75rem;
+  padding-top: 2rem;
   scroll-margin-top: 1.5rem;
   border-top: 1px solid color-mix(in srgb, var(--charcoal) 9%, transparent);
 }
 
 .home-invite-empty {
-  padding: 2rem 1.25rem;
+  margin: 0;
+  padding: 1.5rem 1.25rem;
   border: 1px dashed color-mix(in srgb, var(--charcoal) 14%, transparent);
   border-radius: 1rem;
   background: color-mix(in srgb, white 70%, var(--ivory));
   text-align: center;
   color: var(--muted);
+  font-size: 0.95rem;
 }
 
 .home-invite-list {
   display: flex;
   flex-direction: column;
-  gap: 0.55rem;
+  gap: 0.65rem;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -518,108 +520,84 @@ body {
 
 .home-invite-card {
   display: grid;
-  grid-template-columns: 4.25rem minmax(0, 1fr);
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  grid-template-areas: "cover main";
+  align-items: stretch;
   min-height: 0;
   overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--charcoal) 9%, transparent);
   border-radius: 1rem;
   background: var(--surface);
   box-shadow: 0 8px 22px rgba(48, 48, 46, 0.04);
-  animation: fade-up 0.7s ease both;
-  transition:
-    border-color 220ms ease,
-    box-shadow 220ms ease,
-    transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: border-color 160ms ease, box-shadow 160ms ease;
 }
 
 .home-invite-card:hover {
   border-color: color-mix(in srgb, var(--charcoal) 16%, transparent);
   box-shadow: var(--shadow-lift);
-  transform: translateY(-2px);
 }
 
 .home-invite-cover {
+  grid-area: cover;
   position: relative;
+  min-height: 7.25rem;
   overflow: hidden;
   background:
-    linear-gradient(180deg, color-mix(in srgb, var(--beige) 40%, white) 0%, var(--beige) 100%);
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--beige) 40%, white) 0%,
+      var(--beige) 100%
+    );
   border-right: 1px solid color-mix(in srgb, var(--charcoal) 8%, transparent);
 }
 
 .home-invite-cover-inner {
   position: absolute;
   inset: 0;
+  overflow: hidden;
   pointer-events: none;
 }
 
-.home-invite-cover-inner > * {
-  height: 100%;
+.home-invite-cover-scale {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 360px;
+  height: 480px;
+  transform: translate(-50%, -50%) scale(0.34);
+  transform-origin: center center;
+  pointer-events: none;
+}
+
+.home-invite-cover-scale > * {
+  width: 100% !important;
+  height: 100% !important;
   min-height: 100% !important;
 }
 
-.home-invite-kicker {
+.home-invite-main {
+  grid-area: main;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-}
-
-.home-invite-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  flex-shrink: 0;
-  padding: 0.18rem 0.5rem 0.18rem 0.42rem;
-  border-radius: 999px;
-  font-size: 0.66rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.home-invite-badge-dot {
-  width: 0.38rem;
-  height: 0.38rem;
-  border-radius: 999px;
-  background: currentColor;
-}
-
-.home-invite-badge-live {
-  background: var(--sage-soft);
-  color: color-mix(in srgb, var(--sage) 45%, var(--ink));
-  border: 1px solid color-mix(in srgb, var(--sage) 35%, transparent);
-}
-
-.home-invite-badge-draft {
-  background: var(--surface-subtle);
-  color: var(--muted);
-  border: 1px solid var(--line);
-}
-
-.home-invite-empty {
-  margin: 0;
-  padding: 1.25rem 1.35rem;
-  border: 1px dashed var(--line);
-  border-radius: var(--radius-md);
-  background: var(--surface);
-  color: var(--muted);
-  font-size: 0.95rem;
+  flex-direction: column;
+  min-width: 0;
+  gap: 0.65rem;
+  padding: 0.7rem 0.75rem 0.75rem;
 }
 
 .home-invite-body {
   display: flex;
   flex-direction: column;
   min-width: 0;
-  padding: 0.55rem 0.75rem 0.6rem;
+  gap: 0.12rem;
 }
 
 .home-invite-names {
-  margin-top: 0.15rem;
-  font-size: 1.05rem;
+  margin: 0;
+  font-size: 1.08rem;
   font-weight: 500;
   letter-spacing: -0.02em;
   color: var(--ink);
-  line-height: 1.2;
+  line-height: 1.25;
   text-wrap: balance;
 }
 
@@ -627,15 +605,16 @@ body {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.3rem 0.4rem;
-  margin-top: 0.15rem;
-  font-size: 0.8rem;
-  line-height: 1.35;
-  color: color-mix(in srgb, var(--charcoal) 72%, white);
+  gap: 0.25rem 0.4rem;
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: color-mix(in srgb, var(--charcoal) 68%, white);
 }
 
 .home-invite-template {
-  font-size: 0.72rem;
+  margin: 0;
+  font-size: 0.7rem;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -643,23 +622,22 @@ body {
 }
 
 .home-invite-actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.35rem;
-  grid-column: 1 / -1;
-  padding: 0 0.7rem 0.6rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 0.4rem;
+  margin-top: auto;
 }
 
 .home-invite-more {
   display: flex;
   justify-content: center;
-  margin-top: 0.75rem;
+  margin-top: 0.85rem;
 }
 
 .home-invite-more-btn {
-  min-height: 2.25rem;
-  padding: 0.4rem 0.9rem;
+  min-height: 2.35rem;
+  padding: 0.4rem 1rem;
   border: 1px solid color-mix(in srgb, var(--charcoal) 12%, transparent);
   border-radius: 999px;
   background: var(--surface);
@@ -685,12 +663,14 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 2.15rem;
-  padding: 0.35rem 0.7rem;
+  width: 100%;
+  min-height: 2.4rem;
+  padding: 0.4rem 0.55rem;
   border-radius: 0.55rem;
-  font-size: 0.84rem;
+  font-size: 0.8rem;
   font-weight: 600;
   text-decoration: none;
+  text-align: center;
   transition:
     background 160ms ease,
     color 160ms ease,
@@ -740,16 +720,17 @@ body {
 }
 
 .home-invite-remove-wrap {
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
   align-items: stretch;
+  min-width: 0;
   gap: 0.2rem;
 }
 
 .home-invite-remove-error {
   font-size: 0.72rem;
   color: #b42318;
-  max-width: 8rem;
+  max-width: 100%;
 }
 
 @media (min-width: 720px) {
@@ -778,6 +759,11 @@ body {
   .home-invites-head {
     align-items: flex-start;
     flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .home-invites-meta {
+    align-self: flex-start;
   }
 
   .home-template-footer {
@@ -786,29 +772,114 @@ body {
   }
 
   .home-invite-card {
-    grid-template-columns: 3.75rem minmax(0, 1fr);
+    grid-template-columns: 5.25rem minmax(0, 1fr);
+  }
+
+  .home-invite-cover {
+    min-height: 8rem;
+  }
+
+  .home-invite-cover-scale {
+    transform: translate(-50%, -50%) scale(0.3);
+  }
+
+  .home-invite-main {
+    padding: 0.65rem 0.65rem 0.7rem;
+    gap: 0.55rem;
   }
 
   .home-invite-names {
-    font-size: 1rem;
-  }
-}
-
-@media (min-width: 800px) {
-  .home-invite-card {
-    grid-template-columns: 4.5rem minmax(0, 1fr) auto;
-    align-items: center;
-  }
-
-  .home-invite-body {
-    padding-top: 0.6rem;
-    padding-bottom: 0.6rem;
+    font-size: 1.02rem;
   }
 
   .home-invite-actions {
-    grid-column: 3;
+    gap: 0.35rem;
+  }
+
+  .home-invite-btn {
+    min-height: 2.45rem;
+    padding: 0.4rem 0.3rem;
+    font-size: 0.74rem;
+  }
+}
+
+@media (min-width: 640px) {
+  .home-invite-card {
+    grid-template-columns: 7rem minmax(0, 1fr);
+  }
+
+  .home-invite-cover {
+    min-height: 7rem;
+  }
+
+  .home-invite-cover-scale {
+    transform: translate(-50%, -50%) scale(0.38);
+  }
+
+  .home-invite-main {
+    padding: 0.75rem 0.85rem 0.8rem;
+  }
+}
+
+/* Laptop / large + mobile-wide: actions on the right */
+@media (min-width: 800px) {
+  .home-invite-card {
+    grid-template-columns: 8rem minmax(0, 1fr);
+  }
+
+  .home-invite-cover {
+    min-height: 5.75rem;
+  }
+
+  .home-invite-cover-scale {
+    transform: translate(-50%, -50%) scale(0.42);
+  }
+
+  .home-invite-main {
+    flex-direction: row;
+    align-items: center;
+    gap: 1.15rem;
+    padding: 0.7rem 0.95rem 0.7rem 0.85rem;
+  }
+
+  .home-invite-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .home-invite-actions {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-shrink: 0;
+    width: auto;
     margin-top: 0;
-    padding: 0 0.75rem 0 0;
+    gap: 0.4rem;
+  }
+
+  .home-invite-btn {
+    width: auto;
+    min-width: 5.5rem;
+    min-height: 2.25rem;
+    padding: 0.4rem 0.75rem;
+    font-size: 0.82rem;
+  }
+
+  .home-invite-remove-wrap {
+    width: auto;
+  }
+}
+
+@media (min-width: 1100px) {
+  .home-invite-card {
+    grid-template-columns: 9rem minmax(0, 1fr);
+  }
+
+  .home-invite-cover-scale {
+    transform: translate(-50%, -50%) scale(0.48);
+  }
+
+  .home-invite-names {
+    font-size: 1.18rem;
   }
 }
 
@@ -1782,19 +1853,28 @@ body {
 .modern-compact {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: center;
   height: 100%;
   min-height: 280px;
-  padding: 1.35rem 1.4rem 1.5rem;
+  padding: 1.25rem 1.15rem;
+  text-align: center;
+}
+
+.modern-compact .modern-kicker {
+  color: color-mix(in srgb, var(--modern-ink) 62%, var(--modern-muted));
 }
 
 .modern-compact-names {
-  margin-top: 0.4rem;
-  font-size: 1.55rem;
-  font-weight: 500;
+  margin-top: 0.45rem;
+  max-width: 14ch;
+  font-size: 1.65rem;
+  font-weight: 600;
   line-height: 1.08;
   letter-spacing: -0.02em;
-  color: var(--modern-ink);
+  color: #30302e;
+  text-wrap: balance;
+  word-break: break-word;
 }
 
 .modern-scroll {
@@ -2051,13 +2131,24 @@ body {
 
 .modern-flora-compact .modern-flora-hero-left,
 .modern-flora-compact .modern-flora-hero-right {
-  width: 58%;
-  height: 120%;
-  bottom: -16%;
+  width: 48%;
+  height: 100%;
+  bottom: -22%;
+  opacity: 0.72;
 }
 
 .modern-flora-compact .modern-flora-front {
-  opacity: 0.82;
+  opacity: 0.7;
+}
+
+/* Keep compact preview text above florals in gallery + list thumbs */
+.modern-invite-compact .modern-compact {
+  z-index: 2;
+}
+
+.modern-invite-compact .modern-flora {
+  z-index: 1;
+  pointer-events: none;
 }
 
 @keyframes modern-flora-shadow-left {

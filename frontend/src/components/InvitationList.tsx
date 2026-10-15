@@ -23,14 +23,6 @@ function toView(item: Invitation): InvitationView {
   };
 }
 
-function isPublished(item: Invitation) {
-  return Boolean(
-    item.couple_names?.trim() &&
-      item.wedding_date?.trim() &&
-      item.location?.trim(),
-  );
-}
-
 const MONTHS: Record<string, string> = {
   jan: "January",
   feb: "February",
@@ -99,70 +91,59 @@ export default function InvitationList({ items }: { items: Invitation[] }) {
           ? item.template_id
           : "classic";
         const template = getTemplate(templateId);
-        const published = isPublished(item);
 
         const when = formatInvitationDate(item.wedding_date);
         const where = tidy(item.location);
 
         return (
-          <li
-            key={item.id}
-            className="home-invite-card"
-            style={{ animationDelay: `${index * 50}ms` }}
-          >
+          <li key={item.id} className="home-invite-card">
             <div className="home-invite-cover" aria-hidden>
               <div className="home-invite-cover-inner">
-                <TemplateViews
-                  templateId={templateId}
-                  data={toView(item)}
-                  compact
+                <div className="home-invite-cover-scale">
+                  <TemplateViews
+                    templateId={templateId}
+                    data={toView(item)}
+                    compact
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="home-invite-main">
+              <div className="home-invite-body">
+                <p className="home-invite-template">{template.name}</p>
+
+                <h3 className="font-display home-invite-names">
+                  {item.couple_names || "Untitled invitation"}
+                </h3>
+
+                {(when || where) && (
+                  <p className="home-invite-meta">
+                    {when ? <span>{when}</span> : null}
+                    {when && where ? <span aria-hidden>·</span> : null}
+                    {where ? <span>{where}</span> : null}
+                  </p>
+                )}
+              </div>
+
+              <div className="home-invite-actions">
+                <Link
+                  href={`/invite/${item.slug}`}
+                  className="home-invite-btn home-invite-btn-primary cursor-pointer"
+                >
+                  View link
+                </Link>
+                <Link
+                  href={`/manage/${item.slug}`}
+                  className="home-invite-btn home-invite-btn-ghost cursor-pointer"
+                >
+                  Manage
+                </Link>
+                <RemoveInvitationButton
+                  slug={item.slug}
+                  coupleNames={item.couple_names}
                 />
               </div>
-            </div>
-
-            <div className="home-invite-body">
-              <div className="home-invite-kicker">
-                <p className="home-invite-template">{template.name}</p>
-                <span
-                  className={
-                    published
-                      ? "home-invite-badge home-invite-badge-live"
-                      : "home-invite-badge home-invite-badge-draft"
-                  }
-                >
-                  <span className="home-invite-badge-dot" aria-hidden />
-                  {published ? "Published" : "Draft"}
-                </span>
-              </div>
-
-              <h3 className="font-display home-invite-names">
-                {item.couple_names}
-              </h3>
-
-              <p className="home-invite-meta">
-                <span>{when}</span>
-                <span aria-hidden>·</span>
-                <span>{where}</span>
-              </p>
-            </div>
-
-            <div className="home-invite-actions">
-              <Link
-                href={`/invite/${item.slug}`}
-                className="home-invite-btn home-invite-btn-primary cursor-pointer"
-              >
-                View link
-              </Link>
-              <Link
-                href={`/manage/${item.slug}`}
-                className="home-invite-btn home-invite-btn-ghost cursor-pointer"
-              >
-                Manage
-              </Link>
-              <RemoveInvitationButton
-                slug={item.slug}
-                coupleNames={item.couple_names}
-              />
             </div>
           </li>
         );
