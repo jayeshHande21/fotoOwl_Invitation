@@ -1791,9 +1791,9 @@ body {
   min-height: 100dvh;
   scroll-snap-align: start;
   scroll-snap-stop: always;
-  display: flex;
+  display: grid;
   align-items: center;
-  justify-content: center;
+  justify-items: center;
   overflow: hidden;
   background: var(--modern-ivory);
 }
@@ -1864,11 +1864,240 @@ body {
   height: 6rem;
 }
 
+/* Pinned florals — breeze, same idea as the classic plant shadows */
+.modern-flora {
+  z-index: 1;
+}
+
+.modern-flora-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right center;
+  mix-blend-mode: multiply;
+  user-select: none;
+  pointer-events: none;
+}
+
+.modern-flora-img-flip {
+  transform: scaleX(-1);
+}
+
+.modern-flora-layer {
+  position: absolute;
+  display: flex;
+  will-change: transform;
+}
+
+.modern-flora-back {
+  opacity: 0.42;
+  filter: blur(1.4px);
+}
+
+.modern-flora-front {
+  opacity: 0.94;
+}
+
+/* Hero — sprigs rooted at both lower edges */
+.modern-flora-hero-left,
+.modern-flora-hero-right {
+  bottom: -4%;
+  height: 108%;
+  width: min(32vw, 20rem);
+}
+
+.modern-flora-hero-left {
+  left: 0;
+  transform-origin: 14% 100%;
+  -webkit-mask-image: linear-gradient(90deg, #000 62%, transparent 96%);
+  mask-image: linear-gradient(90deg, #000 62%, transparent 96%);
+}
+
+.modern-flora-hero-right {
+  right: 0;
+  transform-origin: 86% 100%;
+  -webkit-mask-image: linear-gradient(270deg, #000 62%, transparent 96%);
+  mask-image: linear-gradient(270deg, #000 62%, transparent 96%);
+}
+
+.modern-flora-hero-left.modern-flora-back {
+  animation: modern-flora-sway-back 8.4s ease-in-out infinite;
+}
+
+.modern-flora-hero-left.modern-flora-front {
+  animation: modern-flora-sway-front 6.6s ease-in-out infinite;
+}
+
+.modern-flora-hero-right.modern-flora-back {
+  animation: modern-flora-sway-front 7.8s ease-in-out infinite reverse;
+}
+
+.modern-flora-hero-right.modern-flora-front {
+  animation: modern-flora-sway-back 6.9s ease-in-out infinite reverse;
+}
+
+/* Details — a branch hangs from the top left; cherry rises at the lower right */
+.modern-flora-hang {
+  top: -28%;
+  left: -2%;
+  height: 72%;
+  width: min(34vw, 22rem);
+  transform-origin: 18% 0%;
+  -webkit-mask-image: radial-gradient(ellipse 70% 64% at 22% 72%, #000 16%, transparent 70%);
+  mask-image: radial-gradient(ellipse 70% 64% at 22% 72%, #000 16%, transparent 70%);
+}
+
+.modern-flora-hang .modern-flora-img {
+  object-position: right bottom;
+}
+
+.modern-flora-hang.modern-flora-back {
+  animation: modern-flora-hang 9s ease-in-out infinite;
+}
+
+.modern-flora-hang.modern-flora-front {
+  animation: modern-flora-hang 7.2s ease-in-out infinite reverse;
+}
+
+.modern-flora-rise {
+  right: -2%;
+  bottom: -8%;
+  height: 78%;
+  width: min(30vw, 20rem);
+  transform-origin: 84% 100%;
+  -webkit-mask-image: linear-gradient(270deg, #000 55%, transparent 94%);
+  mask-image: linear-gradient(270deg, #000 55%, transparent 94%);
+  animation: modern-flora-sway-front 8s ease-in-out infinite;
+}
+
+/* Notes — cherry drifts along the top; bloom pools in the lower left */
+.modern-flora-canopy {
+  top: -18%;
+  right: -4%;
+  height: 58%;
+  width: min(36vw, 24rem);
+  transform-origin: 80% 12%;
+  -webkit-mask-image: radial-gradient(ellipse 66% 70% at 78% 74%, #000 14%, transparent 70%);
+  mask-image: radial-gradient(ellipse 66% 70% at 78% 74%, #000 14%, transparent 70%);
+  animation: modern-flora-drift 11s ease-in-out infinite;
+}
+
+.modern-flora-canopy .modern-flora-img {
+  object-position: right bottom;
+}
+
+.modern-flora-pool {
+  left: -4%;
+  bottom: -16%;
+  height: 64%;
+  width: min(34vw, 22rem);
+  transform-origin: 20% 100%;
+  -webkit-mask-image: linear-gradient(90deg, #000 50%, transparent 90%);
+  mask-image: linear-gradient(90deg, #000 50%, transparent 90%);
+}
+
+.modern-flora-pool.modern-flora-back {
+  animation: modern-flora-sway-back 9.2s ease-in-out infinite;
+}
+
+.modern-flora-pool.modern-flora-front {
+  animation: modern-flora-sway-front 7.4s ease-in-out infinite;
+}
+
+.modern-flora-compact .modern-flora-back {
+  display: none;
+}
+
+.modern-flora-compact .modern-flora-hero-left,
+.modern-flora-compact .modern-flora-hero-right {
+  width: 58%;
+  height: 120%;
+  bottom: -16%;
+}
+
+.modern-flora-compact .modern-flora-front {
+  opacity: 0.82;
+}
+
+@keyframes modern-flora-sway-back {
+  0%,
+  100% {
+    transform: rotate(-1.6deg) translate3d(-1%, 0, 0);
+  }
+  50% {
+    transform: rotate(2deg) translate3d(1.4%, -1.2%, 0);
+  }
+}
+
+@keyframes modern-flora-sway-front {
+  0%,
+  100% {
+    transform: rotate(1.3deg) translate3d(0.4%, 0, 0);
+  }
+  50% {
+    transform: rotate(-1.8deg) translate3d(-1.1%, -0.8%, 0);
+  }
+}
+
+@keyframes modern-flora-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(-2.4%, 1.4%, 0);
+  }
+}
+
+@keyframes modern-flora-hang {
+  0%,
+  100% {
+    transform: rotate(1.2deg) translate3d(0, 0, 0);
+  }
+  50% {
+    transform: rotate(-2deg) translate3d(1.2%, 1%, 0);
+  }
+}
+
 /* Hero */
 .modern-hero {
-  width: min(34rem, 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(36rem, 100%);
   margin: 0 auto;
   text-align: center;
+}
+
+.modern-mention {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modern-mention-you,
+.modern-mention-invited {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--modern-accent);
+}
+
+.modern-mention-script {
+  margin: -0.15rem 0 0.05rem;
+  font-size: clamp(2.15rem, 5vw, 2.85rem);
+  line-height: 0.9;
+  color: color-mix(in srgb, var(--modern-ink) 78%, var(--modern-accent));
+}
+
+.modern-monogram {
+  margin-top: 1.15rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.42em;
+  color: var(--modern-muted);
 }
 
 .modern-kicker {
@@ -1880,7 +2109,7 @@ body {
 }
 
 .modern-names {
-  margin-top: 1.5rem;
+  margin-top: 0.85rem;
 }
 
 .modern-names h1,
@@ -1898,11 +2127,116 @@ body {
   color: var(--modern-accent);
 }
 
-.modern-rule {
-  margin: 1.5rem auto 0;
-  width: 3rem;
+.modern-ornament {
+  margin: 1.15rem auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+}
+
+.modern-ornament span:first-child,
+.modern-ornament span:last-child {
+  display: block;
+  width: min(4.5rem, 16vw);
   height: 1px;
-  background: color-mix(in srgb, var(--modern-accent) 55%, var(--modern-line));
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--modern-accent) 55%, var(--modern-line)),
+    transparent
+  );
+}
+
+.modern-ornament-gem {
+  width: 0.38rem;
+  height: 0.38rem;
+  border: 1px solid color-mix(in srgb, var(--modern-accent) 70%, var(--modern-line));
+  background: color-mix(in srgb, var(--modern-accent) 16%, white);
+  transform: rotate(45deg);
+}
+
+.modern-pins {
+  margin-top: 1.35rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0.85rem;
+}
+
+.modern-pin {
+  position: relative;
+  width: min(11.25rem, 42vw);
+  padding: 1.05rem 0.85rem 0.9rem;
+  text-align: center;
+  background: #fffdfb;
+  border: 1px solid color-mix(in srgb, var(--modern-accent) 22%, var(--modern-line));
+  border-radius: 2px 14px 14px 14px;
+  box-shadow:
+    0 12px 28px rgba(48, 48, 46, 0.08),
+    0 1px 0 rgba(255, 255, 255, 0.9) inset;
+  animation: modern-pin-in 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.modern-pin-date {
+  animation-delay: 0.42s;
+}
+
+.modern-pin-place {
+  animation-delay: 0.58s;
+  margin-top: 0.85rem;
+}
+
+.modern-pin-dot {
+  position: absolute;
+  top: -0.38rem;
+  left: 50%;
+  width: 0.62rem;
+  height: 0.62rem;
+  margin-left: -0.31rem;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #e7b2a4, var(--modern-accent) 62%);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.45) inset,
+    0 2px 4px rgba(48, 48, 46, 0.16);
+}
+
+.modern-pin-day {
+  margin-top: 0.2rem;
+  font-size: clamp(2.1rem, 5vw, 2.7rem);
+  font-weight: 500;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+}
+
+.modern-pin-fallback,
+.modern-pin-place-name {
+  margin-top: 0.35rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.modern-pin-sub {
+  margin-top: 0.25rem;
+  font-size: 0.82rem;
+  line-height: 1.35;
+  color: var(--modern-muted);
+}
+
+@keyframes modern-pin-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-18px) rotate(0deg);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(3px) rotate(var(--tilt, -2deg));
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(var(--tilt, -2deg));
+  }
 }
 
 .modern-meta {
@@ -2010,12 +2344,103 @@ body {
   color: var(--modern-sage);
 }
 
-.modern-day {
+.modern-date-lockup {
   margin-top: 0.35rem;
-  font-size: clamp(2.4rem, 6vw, 3.6rem);
+  display: flex;
+  align-items: flex-end;
+  gap: 0.75rem;
+}
+
+.modern-day {
+  font-size: clamp(3.4rem, 8vw, 5.2rem);
   font-weight: 500;
-  line-height: 1.05;
-  letter-spacing: -0.03em;
+  line-height: 0.88;
+  letter-spacing: -0.04em;
+}
+
+.modern-day-raw {
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  line-height: 1.15;
+}
+
+.modern-month {
+  font-size: clamp(1.25rem, 2.4vw, 1.7rem);
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+.modern-ceremony {
+  font-family: var(--font-display), Georgia, serif;
+  font-style: italic;
+  color: color-mix(in srgb, var(--modern-accent) 70%, var(--modern-ink));
+}
+
+.modern-count {
+  margin-top: 1.15rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 4.6rem));
+  gap: 0.45rem;
+}
+
+.modern-count div {
+  padding: 0.6rem 0.25rem 0.5rem;
+  text-align: center;
+  background: var(--surface-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.modern-count strong {
+  display: block;
+  font-size: 1.4rem;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.modern-count span {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--modern-muted);
+}
+
+.modern-map {
+  display: inline-flex;
+  margin-top: 1.15rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--modern-accent);
+  text-decoration: underline;
+  text-underline-offset: 0.35em;
+  text-decoration-color: color-mix(in srgb, var(--modern-accent) 40%, transparent);
+}
+
+.modern-map:hover {
+  color: var(--modern-ink);
+}
+
+.modern-schedule {
+  margin-top: 1.6rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--modern-line);
+}
+
+.modern-schedule ul {
+  margin: 0.9rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.9rem;
+}
+
+.modern-schedule li p:last-child {
+  margin-top: 0.25rem;
+  font-size: 1.2rem;
+  line-height: 1.3;
 }
 
 .modern-place {
@@ -2031,6 +2456,11 @@ body {
   font-size: 1.02rem;
   line-height: 1.5;
   color: var(--modern-muted);
+}
+
+p.modern-ceremony {
+  font-style: italic;
+  color: color-mix(in srgb, var(--modern-accent) 70%, var(--modern-ink));
 }
 
 .modern-side-notes {
@@ -2133,10 +2563,141 @@ body {
   text-underline-offset: 0.2em;
 }
 
+@media (max-width: 700px) {
+  .modern-flora-hero-left,
+  .modern-flora-hero-right,
+  .modern-flora-hang,
+  .modern-flora-rise,
+  .modern-flora-canopy,
+  .modern-flora-pool {
+    width: min(34vw, 9rem);
+  }
+
+  .modern-flora-hero-left {
+    left: -8%;
+  }
+
+  .modern-flora-hero-right,
+  .modern-flora-rise {
+    right: -8%;
+  }
+
+  .modern-flora-back {
+    display: none;
+  }
+
+  .modern-names h1,
+  .modern-names-solo {
+    font-size: clamp(2.55rem, 11vw, 3.3rem);
+  }
+
+  .modern-mention-script {
+    font-size: 2.05rem;
+  }
+
+  .modern-pins {
+    gap: 0.55rem;
+  }
+
+  .modern-pin {
+    width: min(10rem, 46vw);
+    padding: 0.85rem 0.65rem 0.75rem;
+  }
+
+  .modern-pin-place {
+    margin-top: 0.45rem;
+  }
+}
+
+@media (max-height: 780px) {
+  .modern-screen-hero {
+    padding-top: 4.25rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .modern-names h1,
+  .modern-names-solo {
+    font-size: clamp(2.35rem, 8vw, 3.6rem);
+  }
+
+  .modern-mention-script {
+    font-size: 2rem;
+  }
+
+  .modern-monogram {
+    margin-top: 0.65rem;
+  }
+
+  .modern-pins {
+    margin-top: 0.9rem;
+  }
+
+  .modern-pin {
+    padding: 0.8rem 0.7rem 0.7rem;
+  }
+
+  .modern-msg {
+    margin-top: 0.75rem;
+  }
+
+  .modern-scroll-cue {
+    margin-top: 1.15rem;
+  }
+
+  .modern-screen-details,
+  .modern-screen-notes {
+    padding-top: 4.25rem;
+    padding-bottom: 1rem;
+  }
+
+  .modern-sheet {
+    padding: 1.15rem 1.3rem 1rem;
+  }
+
+  .modern-details-grid {
+    margin-top: 0.9rem;
+    gap: 1.15rem;
+  }
+
+  .modern-day {
+    font-size: 3.3rem;
+  }
+
+  .modern-count {
+    margin-top: 0.75rem;
+  }
+
+  .modern-side-notes {
+    margin-top: 0.85rem;
+    padding-top: 0.75rem;
+    gap: 0.6rem;
+  }
+
+  .modern-schedule {
+    margin-top: 0.95rem;
+    padding-top: 0.8rem;
+  }
+
+  .modern-schedule ul {
+    margin-top: 0.55rem;
+  }
+}
+
 @media (min-width: 768px) {
   .modern-details-grid {
     grid-template-columns: 1fr 1fr;
     gap: 0;
+  }
+
+  .modern-schedule ul {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+  }
+
+  .modern-schedule li + li {
+    border-left: 1px solid var(--modern-line);
+    padding-left: 1.25rem;
+    margin-left: 1.25rem;
   }
 
   .modern-details-grid article + article {
@@ -2152,17 +2713,76 @@ body {
   }
 }
 
+@media (min-width: 1100px) {
+  .modern-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: min(38rem, 100%);
+  }
+
+  .modern-names h1,
+  .modern-names-solo {
+    font-size: clamp(4.4rem, 5.2vw, 6.1rem);
+  }
+
+  .modern-flora-hero-left,
+  .modern-flora-hero-right {
+    width: min(22vw, 20rem);
+    height: 116%;
+  }
+
+  .modern-sheet {
+    width: min(72rem, 86vw);
+    padding: 2.35rem 3.25rem 1.7rem;
+  }
+
+  .modern-sheet-notes {
+    width: min(68rem, 82vw);
+  }
+
+  .modern-day {
+    font-size: clamp(4.6rem, 5.5vw, 6.1rem);
+  }
+
+  .modern-place {
+    font-size: clamp(2.35rem, 2.8vw, 3.15rem);
+  }
+
+  .modern-flora-hang,
+  .modern-flora-canopy {
+    width: min(28vw, 24rem);
+  }
+
+  .modern-flora-rise,
+  .modern-flora-pool {
+    width: min(26vw, 22rem);
+    height: 82%;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .modern-fade,
   .modern-notes-list li,
-  .modern-scroll-line {
+  .modern-scroll-line,
+  .modern-flora-layer,
+  .modern-pin {
     animation: none !important;
   }
 
   .modern-fade,
-  .modern-notes-list li {
+  .modern-notes-list li,
+  .modern-pin {
     opacity: 1;
+  }
+
+  .modern-fade,
+  .modern-notes-list li {
     transform: none;
+  }
+
+  .modern-pin {
+    transform: rotate(var(--tilt, -2deg));
   }
 
   .modern-scroll {

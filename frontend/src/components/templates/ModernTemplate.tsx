@@ -1,13 +1,17 @@
 "use client";
 
-import type { CSSProperties } from "react";
+import { useEffect, useMemo, useState, type CSSProperties } from "react";
+import ModernFloralScene from "@/components/templates/ModernFloralScene";
 import ModernPaperScene from "@/components/templates/ModernPaperScene";
 import type { InvitationView } from "@/lib/templates";
+import { videoEmbedUrl } from "@/lib/video";
 import {
+  buildEventDate,
+  getCountdown,
   parseCeremonyLabel,
   parseWeddingDate,
+  type CountdownParts,
 } from "@/lib/weddingDate";
-import { videoEmbedUrl } from "@/lib/video";
 
 type Props = {
   data: InvitationView;
@@ -25,12 +29,32 @@ function splitNames(names: string) {
   return null;
 }
 
+function initials(names: string) {
+  return names
+    .split(/\s*&\s*|\s+and\s+/i)
+    .map((part) => part.trim().charAt(0).toUpperCase())
+    .filter(Boolean)
+    .slice(0, 2);
+}
+
+function clockTime(value: string) {
+  return value.match(/(\d{1,2}(?::\d{2})?\s*(?:AM|PM))/i)?.[1] ?? null;
+}
+
 function isDirectVideo(url: string) {
   return /\.(mp4|webm|ogg)(\?.*)?$/i.test(url);
 }
 
+function findDetail(data: InvitationView, ...labels: string[]) {
+  const lower = labels.map((label) => label.toLowerCase());
+  return data.extra_details.find((detail) =>
+    lower.some((label) => detail.label.toLowerCase().includes(label)),
+  );
+}
+
 export default function ModernTemplate({ data, compact }: Props) {
   const names = splitNames(data.couple_names);
+  const marks = initials(data.couple_names);
   const parsed = parseWeddingDate(data.wedding_date);
   const ceremony =
     parseCeremonyLabel(data.venue_details) ||
@@ -42,13 +66,46 @@ export default function ModernTemplate({ data, compact }: Props) {
     .trim();
   const stayTravel = data.extra_details.filter((d) => TRAVEL_STAY.test(d.label));
   const guestNotes = data.extra_details.filter((d) => !TRAVEL_STAY.test(d.label));
+  const reception = findDetail(data, "reception");
+  const travel = findDetail(data, "travel", "shuttle", "transport");
+  const countdown = useCountdown(data.wedding_date, data.venue_details);
+
+  const mapsQuery = [venueOnly, data.location].filter(Boolean).join(", ");
+  const mapsUrl = mapsQuery
+    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapsQuery)}`
+    : null;
+
+  const schedule = useMemo(() => {
+    const items: { label: string; value: string }[] = [];
+    if (ceremony) {
+      items.push({
+        label: "Ceremony",
+        value: clockTime(ceremony) ?? ceremony,
+      });
+    }
+    if (reception?.value) {
+      items.push({
+        label: "Reception",
+        value: clockTime(reception.value) ?? reception.value,
+      });
+    }
+    if (travel?.value) {
+      const time = clockTime(travel.value);
+      items.push({
+        label: "Shuttle",
+        value: time ? `From ${time}` : travel.value,
+      });
+    }
+    return items;
+  }, [ceremony, reception, travel]);
 
   if (compact) {
     return (
       <div className="modern-invite modern-invite-compact relative overflow-hidden">
         <ModernPaperScene compact />
+        <ModernFloralScene compact />
         <div className="modern-compact relative z-10">
-          <p className="modern-kicker">Wedding invitation</p>
+          <p className="modern-kicker">You&apos;re invited</p>
           <h2 className="modern-compact-names font-display">{data.couple_names}</h2>
         </div>
       </div>
@@ -57,39 +114,39 @@ export default function ModernTemplate({ data, compact }: Props) {
 
   return (
     <div className="modern-invite modern-scroll">
-      {/* 1 — Editorial cover */}
       <section className="modern-screen modern-screen-hero">
         <ModernPaperScene />
+        <ModernFloralScene />
         <div className="modern-hero relative z-10">
-          <p className="modern-fade modern-fade-1 modern-kicker">
-            Wedding invitation
-          </p>
+          <div className="modern-fade modern-fade-1 modern-mention">
+            <p className="modern-mention-you">You&apos;re</p>
+            <p className="modern-mention-script font-script">cordially</p>
+            <p className="modern-mention-invited">Invited</p>
+          </div>
+
+          {marks.length > 0 ? (
+            <p className="modern-fade modern-fade-2 modern-monogram" aria-hidden>
+              {marks.join("  ·  ")}
+            </p>
+          ) : null}
 
           {names ? (
-            <div className="modern-fade modern-fade-2 modern-names font-display">
+            <div className="modern-fade modern-fade-3 modern-names font-display">
               <h1>{names.left}</h1>
               <p className="modern-and font-script">and</p>
               <h1>{names.right}</h1>
             </div>
           ) : (
-            <h1 className="modern-fade modern-fade-2 modern-names-solo font-display">
+            <h1 className="modern-fade modern-fade-3 modern-names-solo font-display">
               {data.couple_names}
             </h1>
           )}
 
-          <div className="modern-fade modern-fade-3 modern-rule" aria-hidden />
-
-          <p className="modern-fade modern-fade-4 modern-meta">
-            {parsed.day && parsed.month
-              ? `${parsed.weekday ? `${parsed.weekday} · ` : ""}${parsed.day} ${parsed.month}${
-                  parsed.year ? ` ${parsed.year}` : ""
-                }`
-              : data.wedding_date}
-            <span className="modern-meta-sep" aria-hidden>
-              ·
-            </span>
-            {data.location}
-          </p>
+          <div className="modern-fade modern-fade-4 modern-ornament" aria-hidden>
+            <span />
+            <span className="modern-ornament-gem" />
+            <span />
+          </div>
 
           {data.message ? (
             <p className="modern-fade modern-fade-5 modern-msg">{data.message}</p>
@@ -102,9 +159,9 @@ export default function ModernTemplate({ data, compact }: Props) {
         </div>
       </section>
 
-      {/* 2 — When & where */}
       <section className="modern-screen modern-screen-details">
         <ModernPaperScene soft />
+        <ModernFloralScene scene="details" />
         <div className="modern-sheet relative z-10">
           <p className="modern-kicker">When &amp; where</p>
           <div className="modern-details-grid">
@@ -113,13 +170,29 @@ export default function ModernTemplate({ data, compact }: Props) {
               {parsed.weekday ? (
                 <p className="modern-weekday">{parsed.weekday}</p>
               ) : null}
-              <p className="modern-day font-display">
-                {parsed.day && parsed.month
-                  ? `${parsed.day} ${parsed.month}`
-                  : data.wedding_date}
-              </p>
-              {parsed.year ? <p className="modern-sub">{parsed.year}</p> : null}
-              {ceremony ? <p className="modern-sub">{ceremony}</p> : null}
+              <div className="modern-date-lockup">
+                {parsed.day ? (
+                  <p className="modern-day font-display">{parsed.day}</p>
+                ) : (
+                  <p className="modern-day modern-day-raw font-display">
+                    {data.wedding_date}
+                  </p>
+                )}
+                {parsed.month ? (
+                  <div>
+                    <p className="modern-month font-display">{parsed.month}</p>
+                    {parsed.year ? <p className="modern-sub">{parsed.year}</p> : null}
+                  </div>
+                ) : null}
+              </div>
+              {ceremony ? <p className="modern-sub modern-ceremony">{ceremony}</p> : null}
+              {countdown && !countdown.done ? (
+                <div className="modern-count">
+                  <CountTile value={countdown.days} label="Days" />
+                  <CountTile value={countdown.hours} label="Hours" />
+                  <CountTile value={countdown.minutes} label="Mins" />
+                </div>
+              ) : null}
             </article>
             <article>
               <p className="modern-label">Where</p>
@@ -135,8 +208,33 @@ export default function ModernTemplate({ data, compact }: Props) {
                   ))}
                 </ul>
               ) : null}
+              {mapsUrl ? (
+                <a
+                  href={mapsUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="modern-map"
+                >
+                  View on map
+                </a>
+              ) : null}
             </article>
           </div>
+
+          {schedule.length > 0 ? (
+            <div className="modern-schedule">
+              <p className="modern-label">Day schedule</p>
+              <ul>
+                {schedule.map((item) => (
+                  <li key={item.label}>
+                    <p className="modern-label">{item.label}</p>
+                    <p className="font-display">{item.value}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+
           <div className="modern-scroll-cue">
             <span className="modern-scroll-line" aria-hidden />
             <p>Guest notes</p>
@@ -144,9 +242,9 @@ export default function ModernTemplate({ data, compact }: Props) {
         </div>
       </section>
 
-      {/* 3 — Guest notes */}
       <section className="modern-screen modern-screen-notes">
         <ModernPaperScene soft />
+        <ModernFloralScene scene="notes" />
         <div className="modern-sheet modern-sheet-notes relative z-10">
           <p className="modern-kicker">For our guests</p>
           <h2 className="modern-notes-title font-display">Details for the day</h2>
@@ -175,6 +273,52 @@ export default function ModernTemplate({ data, compact }: Props) {
           ) : null}
         </div>
       </section>
+    </div>
+  );
+}
+
+function useCountdown(weddingDate: string, venueDetails: string) {
+  const eventDate = useMemo(
+    () => buildEventDate(weddingDate, venueDetails),
+    [weddingDate, venueDetails],
+  );
+  const [countdown, setCountdown] = useState<CountdownParts | null>(null);
+
+  useEffect(() => {
+    if (!eventDate) {
+      setCountdown(null);
+      return;
+    }
+
+    const tick = () => {
+      const next = getCountdown(eventDate);
+      setCountdown((prev) => {
+        if (
+          prev &&
+          prev.days === next.days &&
+          prev.hours === next.hours &&
+          prev.minutes === next.minutes &&
+          prev.done === next.done
+        ) {
+          return prev;
+        }
+        return next;
+      });
+    };
+
+    tick();
+    const id = window.setInterval(tick, 30_000);
+    return () => window.clearInterval(id);
+  }, [eventDate]);
+
+  return countdown;
+}
+
+function CountTile({ value, label }: { value: number; label: string }) {
+  return (
+    <div>
+      <strong className="font-display">{String(value).padStart(2, "0")}</strong>
+      <span>{label}</span>
     </div>
   );
 }
