@@ -122,6 +122,12 @@ body {
   cursor: not-allowed;
 }
 
+.template-preview-bar {
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
 /* —— Home shell —— */
 .home-shell {
   position: relative;
