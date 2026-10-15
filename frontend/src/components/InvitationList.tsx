@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import type { Invitation } from "@/lib/api";
+import CopyInviteLinkButton from "@/components/CopyInviteLinkButton";
 import RemoveInvitationButton from "@/components/RemoveInvitationButton";
 import TemplateViews from "@/components/templates/TemplateViews";
 import {
@@ -127,12 +128,7 @@ export default function InvitationList({ items }: { items: Invitation[] }) {
               </div>
 
               <div className="home-invite-actions">
-                <Link
-                  href={`/invite/${item.slug}`}
-                  className="home-invite-btn home-invite-btn-primary cursor-pointer"
-                >
-                  View link
-                </Link>
+                <CopyInviteLinkButton slug={item.slug} />
                 <Link
                   href={`/manage/${item.slug}`}
                   className="home-invite-btn home-invite-btn-ghost cursor-pointer"
