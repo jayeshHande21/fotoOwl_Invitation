@@ -31,6 +31,7 @@ export default async function InvitePage({ params }: Props) {
     location: invitation.location,
     venue_details: invitation.venue_details || "",
     video_url: invitation.video_url || "",
+    photos_url: invitation.photos_url || "",
     message: invitation.message || "",
     extra_details: invitation.extra_details,
   };

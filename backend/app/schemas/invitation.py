@@ -23,6 +23,7 @@ class InvitationCreate(BaseModel):
     template_id: str = Field(default="classic", max_length=40)
     venue_details: str | None = None
     video_url: str | None = None
+    photos_url: str | None = None
     message: str | None = None
     slug: str | None = Field(default=None, max_length=120)
     extra_details: list[ExtraDetailCreate] = Field(default_factory=list)
@@ -35,6 +36,7 @@ class InvitationUpdate(BaseModel):
     template_id: str | None = Field(default=None, max_length=40)
     venue_details: str | None = None
     video_url: str | None = None
+    photos_url: str | None = None
     message: str | None = None
 
 
@@ -47,6 +49,7 @@ class InvitationOut(BaseModel):
     location: str
     venue_details: str | None
     video_url: str | None
+    photos_url: str | None
     message: str | None
     extra_details: list[ExtraDetailOut] = Field(default_factory=list)
     created_at: datetime

@@ -1,6 +1,7 @@
 "use client";
 
 import CelebrationHeroCover from "@/components/templates/CelebrationHeroCover";
+import PhotosLink from "@/components/templates/PhotosLink";
 import type { InvitationView } from "@/lib/templates";
 import { buildMapsUrl } from "@/lib/maps";
 import {
@@ -213,6 +214,8 @@ export default function CelebrationTemplate({ data, compact }: Props) {
               <VideoBlock url={data.video_url} />
             </div>
           ) : null}
+
+          <PhotosLink url={data.photos_url} variant="celebration" />
         </div>
       </section>
     </div>

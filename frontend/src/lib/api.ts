@@ -15,6 +15,7 @@ export type Invitation = {
   location: string;
   venue_details: string | null;
   video_url: string | null;
+  photos_url: string | null;
   message: string | null;
   extra_details: ExtraDetail[];
   created_at: string;
@@ -28,6 +29,7 @@ export type InvitationPayload = {
   template_id?: string;
   venue_details?: string;
   video_url?: string;
+  photos_url?: string;
   message?: string;
   slug?: string;
   extra_details?: { label: string; value: string }[];

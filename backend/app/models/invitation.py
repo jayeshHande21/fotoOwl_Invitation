@@ -17,6 +17,7 @@ class Invitation(Base):
     location: Mapped[str] = mapped_column(String(255))
     venue_details: Mapped[str | None] = mapped_column(Text, nullable=True)
     video_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    photos_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
     message: Mapped[str | None] = mapped_column(Text, nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()

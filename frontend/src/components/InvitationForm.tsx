@@ -15,6 +15,7 @@ export default function InvitationForm() {
   const [location, setLocation] = useState("");
   const [venueDetails, setVenueDetails] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
+  const [photosUrl, setPhotosUrl] = useState("");
   const [message, setMessage] = useState("");
   const [slug, setSlug] = useState("");
   const [extras, setExtras] = useState<ExtraRow[]>([emptyExtra()]);
@@ -33,6 +34,7 @@ export default function InvitationForm() {
         location,
         venue_details: venueDetails || undefined,
         video_url: videoUrl || undefined,
+        photos_url: photosUrl || undefined,
         message: message || undefined,
         slug: slug || undefined,
         extra_details: extras.filter((row) => row.label && row.value),
@@ -93,6 +95,16 @@ export default function InvitationForm() {
           placeholder="The Leela Palace · Ceremony at 5:00 PM"
           rows={3}
           className="field-input resize-y"
+        />
+      </Field>
+
+      <Field label="Get your photos link">
+        <input
+          type="url"
+          value={photosUrl}
+          onChange={(e) => setPhotosUrl(e.target.value)}
+          placeholder="https://…"
+          className="field-input"
         />
       </Field>
 

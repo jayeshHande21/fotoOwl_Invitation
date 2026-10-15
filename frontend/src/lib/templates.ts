@@ -6,6 +6,7 @@ export type InvitationView = {
   location: string;
   venue_details: string;
   video_url: string;
+  photos_url: string;
   message: string;
   extra_details: { id?: number; label: string; value: string }[];
 };
@@ -50,6 +51,7 @@ export const SAMPLE_INVITATION: InvitationView = {
   location: "Jaipur, Rajasthan",
   venue_details: "The Leela Palace · Ceremony at 5:00 PM",
   video_url: "",
+  photos_url: "https://fotoowl.ai",
   message:
     "With joy in our hearts, we invite you to celebrate our wedding day with us.",
   extra_details: [

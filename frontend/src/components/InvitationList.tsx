@@ -19,6 +19,7 @@ function toView(item: Invitation): InvitationView {
     location: item.location,
     venue_details: item.venue_details || "",
     video_url: item.video_url || "",
+    photos_url: item.photos_url || "",
     message: item.message || "",
     extra_details: item.extra_details || [],
   };

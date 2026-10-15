@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import ModernFloralScene from "@/components/templates/ModernFloralScene";
 import ModernPaperScene from "@/components/templates/ModernPaperScene";
+import PhotosLink from "@/components/templates/PhotosLink";
 import type { InvitationView } from "@/lib/templates";
 import { videoEmbedUrl } from "@/lib/video";
 import { buildMapsUrl } from "@/lib/maps";
@@ -277,6 +278,7 @@ export default function ModernTemplate({ data, compact }: Props) {
               <VideoBlock url={data.video_url} />
             </aside>
           ) : null}
+          <PhotosLink url={data.photos_url} variant="modern" />
         </div>
       </section>
     </div>

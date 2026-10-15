@@ -72,6 +72,21 @@ export default async function ManagePage({ params }: Props) {
               </dd>
             </div>
           ) : null}
+          {invitation.photos_url ? (
+            <div className="sm:col-span-2">
+              <dt className="text-[var(--muted)]">Get your photos</dt>
+              <dd className="mt-1 break-all text-[var(--ink)]">
+                <a
+                  href={invitation.photos_url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-[var(--accent)] underline-offset-4 hover:underline"
+                >
+                  {invitation.photos_url}
+                </a>
+              </dd>
+            </div>
+          ) : null}
         </dl>
 
         {invitation.extra_details.length > 0 ? (

@@ -41,8 +41,8 @@ export default function UpdateFormPanel({
 
   useEffect(() => {
     if (!open) return;
-    if (values.video_url || slug) setShowOptional(true);
-  }, [open, values.video_url, slug]);
+    if (values.video_url || values.photos_url || slug) setShowOptional(true);
+  }, [open, values.video_url, values.photos_url, slug]);
 
   function update<K extends keyof InvitationView>(key: K, value: InvitationView[K]) {
     onChange({ ...values, [key]: value });
@@ -69,6 +69,7 @@ export default function UpdateFormPanel({
         location: values.location,
         venue_details: values.venue_details || undefined,
         video_url: values.video_url || undefined,
+        photos_url: values.photos_url || undefined,
         message: values.message || undefined,
         slug: slug || undefined,
         extra_details: extras.filter((row) => row.label && row.value),
@@ -259,7 +260,7 @@ export default function UpdateFormPanel({
             <Section
               step="4"
               title="Optional"
-              hint="Video and custom link — only if you need them"
+              hint="Photos, video, and custom link — only if you need them"
             >
               <button
                 type="button"
@@ -267,7 +268,9 @@ export default function UpdateFormPanel({
                 className="flex w-full items-center justify-between rounded-lg border border-dashed border-[var(--line)] bg-white px-3 py-2.5 text-left text-sm text-[var(--ink)]"
               >
                 <span>
-                  {showOptional ? "Hide optional fields" : "Show video & custom link"}
+                  {showOptional
+                    ? "Hide optional fields"
+                    : "Show photos, video & custom link"}
                 </span>
                 <span className="text-[var(--muted)]">
                   {showOptional ? "−" : "+"}
@@ -276,6 +279,18 @@ export default function UpdateFormPanel({
 
               {showOptional ? (
                 <div className="mt-3 space-y-3">
+                  <Field
+                    label="Get your photos link"
+                    hint="Gallery or download link guests can open after the wedding"
+                  >
+                    <input
+                      type="url"
+                      value={values.photos_url}
+                      onChange={(e) => update("photos_url", e.target.value)}
+                      className="field-input"
+                      placeholder="https://…"
+                    />
+                  </Field>
                   <Field
                     label="Video URL"
                     hint="YouTube or Vimeo link for the guest page"

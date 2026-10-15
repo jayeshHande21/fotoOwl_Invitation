@@ -18,6 +18,11 @@ with engine.connect() as conn:
             )
         )
         conn.commit()
+    if "photos_url" not in columns:
+        conn.execute(
+            text("ALTER TABLE invitations ADD COLUMN photos_url VARCHAR(500)")
+        )
+        conn.commit()
 
 app = FastAPI(
     title="FotoOwl Invitation API",

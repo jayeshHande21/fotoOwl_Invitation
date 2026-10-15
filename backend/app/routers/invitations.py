@@ -52,6 +52,7 @@ def create_invitation(payload: InvitationCreate, db: Session = Depends(get_db)):
         location=payload.location.strip(),
         venue_details=payload.venue_details.strip() if payload.venue_details else None,
         video_url=payload.video_url.strip() if payload.video_url else None,
+        photos_url=payload.photos_url.strip() if payload.photos_url else None,
         message=payload.message.strip() if payload.message else None,
     )
     db.add(invitation)

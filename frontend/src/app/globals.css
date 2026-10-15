@@ -128,6 +128,95 @@ body {
   -webkit-backdrop-filter: blur(12px);
 }
 
+/* Guest photos CTA — end of “For our guests” */
+.photos-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  margin-top: 1.75rem;
+  margin-inline: auto;
+  padding: 0.85rem 1.45rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  line-height: 1;
+  transition:
+    background var(--ease),
+    color var(--ease),
+    border-color var(--ease),
+    transform var(--ease),
+    box-shadow var(--ease);
+}
+
+.photos-cta-icon {
+  display: inline-flex;
+  width: 1.05rem;
+  height: 1.05rem;
+  flex-shrink: 0;
+}
+
+.photos-cta:hover {
+  transform: translateY(-1px);
+}
+
+.photos-cta:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+.photos-cta-classic {
+  color: #fff;
+  background: var(--ink);
+  border-color: var(--ink);
+  box-shadow: 0 10px 24px rgba(48, 48, 46, 0.14);
+}
+
+.photos-cta-classic:hover {
+  background: color-mix(in srgb, var(--ink) 88%, white);
+  border-color: color-mix(in srgb, var(--ink) 88%, white);
+}
+
+.photos-cta-garden {
+  color: #fff;
+  background: #3d5c45;
+  border-color: #3d5c45;
+  box-shadow: 0 10px 24px rgba(61, 92, 69, 0.2);
+}
+
+.photos-cta-garden:hover {
+  background: #314d3a;
+  border-color: #314d3a;
+}
+
+.photos-cta-modern {
+  color: #fff;
+  background: var(--modern-accent, var(--accent));
+  border-color: var(--modern-accent, var(--accent));
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--accent) 28%, transparent);
+}
+
+.photos-cta-modern:hover {
+  background: color-mix(in srgb, var(--accent) 88%, #30302e);
+  border-color: color-mix(in srgb, var(--accent) 88%, #30302e);
+}
+
+.photos-cta-celebration {
+  color: #faf4ec;
+  background: #6b1d28;
+  border-color: #6b1d28;
+  box-shadow: 0 10px 24px rgba(107, 29, 40, 0.22);
+}
+
+.photos-cta-celebration:hover {
+  background: #571722;
+  border-color: #571722;
+}
+
 /* —— Home shell —— */
 .home-shell {
   position: relative;

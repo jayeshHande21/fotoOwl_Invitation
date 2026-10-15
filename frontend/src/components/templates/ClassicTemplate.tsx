@@ -6,6 +6,7 @@ import {
   ClassicSectionTitle,
 } from "@/components/templates/ClassicOrnament";
 import ClassicWhenSection from "@/components/templates/ClassicWhenSection";
+import PhotosLink from "@/components/templates/PhotosLink";
 import type { InvitationView } from "@/lib/templates";
 import { videoEmbedUrl } from "@/lib/video";
 
@@ -148,6 +149,8 @@ export default function ClassicTemplate({ data, compact }: Props) {
                 <VideoBlock url={data.video_url} />
               </div>
             ) : null}
+
+            <PhotosLink url={data.photos_url} variant="classic" />
           </div>
         </div>
       </section>
