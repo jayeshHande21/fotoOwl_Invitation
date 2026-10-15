@@ -2,6 +2,7 @@
 
 import CelebrationHeroCover from "@/components/templates/CelebrationHeroCover";
 import type { InvitationView } from "@/lib/templates";
+import { buildMapsUrl } from "@/lib/maps";
 import {
   parseCeremonyLabel,
   parseWeddingDate,
@@ -81,6 +82,7 @@ export default function CelebrationTemplate({ data, compact }: Props) {
     .trim();
   const stayTravel = data.extra_details.filter((d) => TRAVEL_STAY.test(d.label));
   const guestNotes = data.extra_details.filter((d) => !TRAVEL_STAY.test(d.label));
+  const mapsUrl = buildMapsUrl(venueOnly, data.location);
 
   if (compact) {
     return (
@@ -142,6 +144,16 @@ export default function CelebrationTemplate({ data, compact }: Props) {
             <p className="celeb-letter-place">{data.location}</p>
             {venueOnly ? (
               <p className="celeb-letter-venue">{venueOnly}</p>
+            ) : null}
+            {mapsUrl ? (
+              <a
+                href={mapsUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="celeb-map-link"
+              >
+                View on map
+              </a>
             ) : null}
           </div>
 

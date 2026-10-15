@@ -920,6 +920,28 @@ body {
   overflow: hidden;
 }
 
+@media (max-width: 700px) {
+  .classic-screen-details {
+    align-items: flex-start;
+    height: 100svh;
+    height: 100dvh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 5.75rem 0 1.15rem;
+  }
+
+  .classic-screen-details .classic-soft-mark {
+    width: min(30vw, 8.5rem);
+    opacity: 0.18;
+  }
+
+  .classic-countdown-tile {
+    min-height: 3.6rem;
+    padding: 0.5rem 0.3rem;
+  }
+}
+
 .classic-screen-inner {
   width: min(40rem, 92vw);
   padding: 4.5rem 1.25rem;
@@ -2058,6 +2080,26 @@ body {
   }
 }
 
+@keyframes modern-flora-sway-mobile-left {
+  0%,
+  100% {
+    transform: rotate(-2.4deg) translate3d(-1.5%, 0, 0);
+  }
+  50% {
+    transform: rotate(3.2deg) translate3d(2.2%, -1.8%, 0);
+  }
+}
+
+@keyframes modern-flora-sway-mobile-right {
+  0%,
+  100% {
+    transform: rotate(2.4deg) translate3d(1.5%, 0, 0);
+  }
+  50% {
+    transform: rotate(-3.2deg) translate3d(-2.2%, -1.8%, 0);
+  }
+}
+
 @keyframes modern-flora-sway-back {
   0%,
   100% {
@@ -2130,8 +2172,72 @@ body {
   color: color-mix(in srgb, var(--modern-ink) 78%, var(--modern-accent));
 }
 
-.modern-monogram {
+.modern-rule {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  width: min(18rem, 72%);
+  margin: 0 auto;
+}
+
+.modern-rule span {
+  display: block;
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--modern-accent) 55%, var(--modern-line)),
+    transparent
+  );
+}
+
+.modern-rule i {
+  display: block;
+  width: 0.34rem;
+  height: 0.34rem;
+  border: 1px solid color-mix(in srgb, var(--modern-accent) 65%, var(--modern-line));
+  background: color-mix(in srgb, var(--modern-accent) 14%, white);
+  transform: rotate(45deg);
+  font-style: normal;
+}
+
+.modern-rule-top {
+  margin-bottom: 1.15rem;
+}
+
+.modern-monogram-row {
   margin-top: 1.15rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  width: min(22rem, 88%);
+}
+
+.modern-rule-arm {
+  display: block;
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--modern-accent) 48%, var(--modern-line))
+  );
+}
+
+.modern-monogram-row .modern-rule-arm:last-child {
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--modern-accent) 48%, var(--modern-line)),
+    transparent
+  );
+}
+
+.modern-monogram {
+  margin: 0;
+  flex-shrink: 0;
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.42em;
@@ -2171,6 +2277,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0.65rem;
+  width: min(16rem, 70%);
 }
 
 .modern-ornament span:first-child,
@@ -2602,11 +2709,9 @@ p.modern-ceremony {
 }
 
 @media (max-width: 700px) {
-  .modern-flora-hero-left,
-  .modern-flora-hero-right,
   .modern-flora-hang,
   .modern-flora-rise {
-    width: min(34vw, 9rem);
+    width: min(38vw, 10rem);
   }
 
   .modern-flora-pool {
@@ -2614,26 +2719,180 @@ p.modern-ceremony {
     height: 58%;
   }
 
-  .modern-flora-hero-left {
-    left: -8%;
-  }
-
-  .modern-flora-hero-right,
   .modern-flora-rise {
-    right: -8%;
+    right: -6%;
   }
 
-  .modern-flora-back {
+  .modern-screen-details .modern-flora-back,
+  .modern-screen-notes .modern-flora-back {
     display: none;
+  }
+
+  /* Mobile hero: pin under the preview chrome (no vertical centering) */
+  .modern-screen.modern-screen-hero {
+    align-items: start;
+    align-content: start;
+    justify-items: center;
+    padding: 6.5rem 1.2rem 1.35rem;
+  }
+
+  .modern-hero {
+    width: min(18.5rem, 90%);
+    margin-top: 0;
+    align-self: start;
+  }
+
+  .modern-mention-you,
+  .modern-mention-invited {
+    font-size: 0.7rem;
+    letter-spacing: 0.38em;
+    padding-left: 0.38em;
+  }
+
+  .modern-mention-script {
+    margin-top: 0.1rem;
+    font-size: 2.75rem;
+  }
+
+  .modern-monogram-row {
+    margin-top: 1.35rem;
+    width: min(16.5rem, 86%);
+  }
+
+  .modern-monogram {
+    letter-spacing: 0.48em;
+    padding-left: 0.48em;
+  }
+
+  .modern-rule-top {
+    width: min(14rem, 70%);
+    margin-bottom: 0.95rem;
+  }
+
+  .modern-names {
+    margin-top: 0.55rem;
   }
 
   .modern-names h1,
   .modern-names-solo {
-    font-size: clamp(2.55rem, 11vw, 3.3rem);
+    font-size: clamp(3.7rem, 16.5vw, 4.25rem);
+    line-height: 0.88;
   }
 
-  .modern-mention-script {
-    font-size: 2.05rem;
+  .modern-and {
+    margin: 0.2rem 0 0.1rem;
+    font-size: 2.15rem;
+  }
+
+  .modern-ornament {
+    margin-top: 1.35rem;
+  }
+
+  .modern-ornament span:first-child,
+  .modern-ornament span:last-child {
+    width: min(5.5rem, 22vw);
+  }
+
+  .modern-msg {
+    max-width: 16.5rem;
+    margin-top: 1.1rem;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .modern-scroll-cue {
+    margin-top: 2.1rem;
+    letter-spacing: 0.32em;
+    padding-left: 0.32em;
+  }
+
+  /* Tall corner flowers + soft shadow, filling the lower half */
+  .modern-screen-hero .modern-flora-hero-left,
+  .modern-screen-hero .modern-flora-hero-right {
+    width: min(62vw, 14.5rem);
+    height: 78%;
+    bottom: -2%;
+  }
+
+  .modern-screen-hero .modern-flora-hero-left {
+    left: -10%;
+  }
+
+  .modern-screen-hero .modern-flora-hero-right {
+    right: -10%;
+  }
+
+  .modern-screen-hero .modern-flora-back {
+    display: flex;
+    opacity: 0.88;
+    filter: blur(11px);
+  }
+
+  .modern-screen-hero .modern-flora-hero-left.modern-flora-back,
+  .modern-screen-hero .modern-flora-hero-right.modern-flora-back {
+    width: min(72vw, 17rem);
+    height: 84%;
+    bottom: -4%;
+  }
+
+  .modern-screen-hero .modern-flora-hero-left.modern-flora-back {
+    left: -14%;
+    animation: modern-flora-shadow-left 7.5s ease-in-out infinite;
+  }
+
+  .modern-screen-hero .modern-flora-hero-right.modern-flora-back {
+    right: -14%;
+    animation: modern-flora-shadow-right 8.1s ease-in-out infinite;
+  }
+
+  .modern-screen-hero .modern-flora-hero-left.modern-flora-front {
+    animation: modern-flora-sway-mobile-left 5.4s ease-in-out infinite;
+  }
+
+  .modern-screen-hero .modern-flora-hero-right.modern-flora-front {
+    animation: modern-flora-sway-mobile-right 5.8s ease-in-out infinite;
+  }
+
+  .modern-screen-hero .modern-flora-front {
+    opacity: 1;
+  }
+
+  .modern-screen-hero .modern-flora-front .modern-flora-img {
+    mix-blend-mode: multiply;
+    object-position: right bottom;
+    transform-origin: right bottom;
+    filter: contrast(1.1) saturate(1.22);
+  }
+
+  .modern-screen-hero .modern-flora-front .modern-flora-img-flip {
+    transform: scaleX(-1) scale(1.12);
+    transform-origin: center bottom;
+  }
+
+  .modern-screen-hero .modern-flora-hero-right.modern-flora-front .modern-flora-img {
+    transform: scale(1.12);
+  }
+
+  .modern-screen-hero .modern-flora-back .modern-flora-img {
+    object-position: right bottom;
+    filter: saturate(1.3);
+  }
+
+  .modern-screen-hero .modern-paper-wash-rose {
+    width: 20rem;
+    height: 20rem;
+    opacity: 0.62;
+    bottom: -6%;
+    right: -12%;
+  }
+
+  .modern-screen-hero .modern-paper-wash-sage {
+    top: auto;
+    width: 18rem;
+    height: 18rem;
+    opacity: 0.45;
+    bottom: -8%;
+    left: -14%;
   }
 
   .modern-pins {
@@ -2648,9 +2907,119 @@ p.modern-ceremony {
   .modern-pin-place {
     margin-top: 0.45rem;
   }
+
+  .modern-screen-details {
+    align-items: center;
+    justify-items: stretch;
+    padding: 5.5rem 1.15rem 1.75rem;
+  }
+
+  .modern-screen-details .modern-sheet {
+    width: 100%;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .modern-screen-details .modern-kicker {
+    display: none;
+  }
+
+  .modern-details-grid {
+    margin-top: 0.35rem;
+    gap: 2.15rem;
+  }
+
+  .modern-weekday {
+    margin-top: 0.7rem;
+  }
+
+  .modern-day {
+    font-size: 4.1rem;
+  }
+
+  .modern-month {
+    font-size: 1.45rem;
+  }
+
+  .modern-ceremony {
+    margin-top: 0.55rem;
+    font-size: 1.05rem;
+  }
+
+  .modern-count {
+    margin-top: 1.15rem;
+    width: auto;
+    grid-template-columns: repeat(3, minmax(3.6rem, 4.4rem));
+    gap: 0.55rem;
+  }
+
+  .modern-count div {
+    padding: 0.7rem 0.2rem 0.55rem;
+    background: transparent;
+    border: 1px solid color-mix(in srgb, var(--modern-line) 80%, transparent);
+  }
+
+  .modern-count strong {
+    font-size: 1.35rem;
+  }
+
+  .modern-place {
+    margin-top: 0.55rem;
+    font-size: 2rem;
+  }
+
+  .modern-sub {
+    margin-top: 0.35rem;
+    font-size: 1.02rem;
+  }
+
+  .modern-side-notes {
+    margin-top: 1.25rem;
+    padding-top: 1.1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem 1.25rem;
+  }
+
+  .modern-side-notes span {
+    font-size: 1.05rem;
+    line-height: 1.35;
+  }
+
+  .modern-map {
+    margin-top: 1.1rem;
+  }
+
+  .modern-schedule {
+    margin-top: 1.65rem;
+    padding-top: 1.25rem;
+  }
+
+  .modern-schedule ul {
+    margin-top: 0.95rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem 0.85rem;
+  }
+
+  .modern-schedule li + li {
+    border-left: 1px solid var(--modern-line);
+    padding-left: 0.85rem;
+  }
+
+  .modern-schedule li p:last-child {
+    margin-top: 0.4rem;
+    font-size: 1.15rem;
+  }
+
+  .modern-screen-details .modern-scroll-cue {
+    margin-top: 1.85rem;
+  }
 }
 
-@media (max-height: 780px) {
+@media (max-height: 780px) and (min-width: 701px) {
   .modern-screen-hero {
     padding-top: 4.25rem;
     padding-bottom: 1.5rem;
@@ -2665,7 +3034,7 @@ p.modern-ceremony {
     font-size: 2rem;
   }
 
-  .modern-monogram {
+  .modern-monogram-row {
     margin-top: 0.65rem;
   }
 
@@ -2684,43 +3053,49 @@ p.modern-ceremony {
   .modern-scroll-cue {
     margin-top: 1.15rem;
   }
+}
 
-  .modern-screen-details,
+@media (max-height: 780px) {
   .modern-screen-notes {
     padding-top: 4.25rem;
     padding-bottom: 1rem;
   }
 
-  .modern-sheet {
+  .modern-sheet-notes {
     padding: 1.15rem 1.3rem 1rem;
+  }
+}
+
+@media (max-width: 700px) and (max-height: 780px) {
+  .modern-screen-details {
+    padding: 5rem 1.1rem 1.35rem;
   }
 
   .modern-details-grid {
-    margin-top: 0.9rem;
-    gap: 1.15rem;
+    margin-top: 1.15rem;
+    gap: 1.35rem;
   }
 
   .modern-day {
-    font-size: 3.3rem;
+    font-size: 3.55rem;
   }
 
   .modern-count {
-    margin-top: 0.75rem;
+    margin-top: 0.9rem;
   }
 
   .modern-side-notes {
-    margin-top: 0.85rem;
-    padding-top: 0.75rem;
-    gap: 0.6rem;
+    margin-top: 1rem;
+    padding-top: 0.9rem;
   }
 
   .modern-schedule {
-    margin-top: 0.95rem;
-    padding-top: 0.8rem;
+    margin-top: 1.25rem;
+    padding-top: 1rem;
   }
 
-  .modern-schedule ul {
-    margin-top: 0.55rem;
+  .modern-screen-details .modern-scroll-cue {
+    margin-top: 1.35rem;
   }
 }
 
@@ -2755,28 +3130,95 @@ p.modern-ceremony {
 }
 
 @media (min-width: 1100px) {
+  .modern-screen.modern-screen-hero {
+    align-items: center;
+    padding: 5.5rem clamp(2rem, 4vw, 3.5rem) 3rem;
+  }
+
   .modern-hero {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: min(38rem, 100%);
+    width: min(44rem, 58vw);
+  }
+
+  .modern-rule-top {
+    width: min(28rem, 70%);
+    margin-bottom: 1.45rem;
+    gap: 0.9rem;
+  }
+
+  .modern-rule-top span {
+    height: 1px;
+  }
+
+  .modern-mention-you,
+  .modern-mention-invited {
+    font-size: 0.78rem;
+    letter-spacing: 0.48em;
+  }
+
+  .modern-mention-script {
+    font-size: clamp(2.9rem, 3.4vw, 3.55rem);
+  }
+
+  .modern-monogram-row {
+    margin-top: 1.55rem;
+    width: min(32rem, 78%);
+    gap: 1.15rem;
+  }
+
+  .modern-monogram {
+    letter-spacing: 0.5em;
+    padding-left: 0.5em;
+  }
+
+  .modern-names {
+    margin-top: 1.05rem;
   }
 
   .modern-names h1,
   .modern-names-solo {
-    font-size: clamp(4.4rem, 5.2vw, 6.1rem);
+    font-size: clamp(4.6rem, 5.4vw, 6.35rem);
+  }
+
+  .modern-and {
+    margin: 0.3rem 0;
+    font-size: 2.35rem;
+  }
+
+  .modern-ornament {
+    margin-top: 1.45rem;
+    gap: 0.85rem;
+    width: min(26rem, 70%);
+  }
+
+  .modern-ornament span:first-child,
+  .modern-ornament span:last-child {
+    width: auto;
+    flex: 1;
+  }
+
+  .modern-msg {
+    margin-top: 1.35rem;
+    max-width: 32rem;
+    font-size: 1.08rem;
+  }
+
+  .modern-scroll-cue {
+    margin-top: 2.6rem;
   }
 
   .modern-flora-hero-left,
   .modern-flora-hero-right {
-    width: min(22vw, 20rem);
-    height: 116%;
+    width: min(26vw, 24rem);
+    height: 118%;
   }
 
   .modern-flora-hero-left.modern-flora-back,
   .modern-flora-hero-right.modern-flora-back {
-    width: min(28vw, 24rem);
-    height: 122%;
+    width: min(32vw, 28rem);
+    height: 124%;
   }
 
   .modern-sheet {
@@ -3025,6 +3467,23 @@ p.modern-ceremony {
   margin-top: 0.45rem;
   font-size: 1.05rem;
   color: rgba(246, 239, 230, 0.72);
+}
+
+.celeb-map-link {
+  display: inline-flex;
+  margin-top: 1rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #f0d4c0;
+  text-decoration: underline;
+  text-underline-offset: 0.35em;
+  text-decoration-color: rgba(240, 212, 192, 0.45);
+}
+
+.celeb-map-link:hover {
+  color: #faf4ec;
 }
 
 .celeb-letter-notes {

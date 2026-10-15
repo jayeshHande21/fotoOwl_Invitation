@@ -5,6 +5,7 @@ import ModernFloralScene from "@/components/templates/ModernFloralScene";
 import ModernPaperScene from "@/components/templates/ModernPaperScene";
 import type { InvitationView } from "@/lib/templates";
 import { videoEmbedUrl } from "@/lib/video";
+import { buildMapsUrl } from "@/lib/maps";
 import {
   buildEventDate,
   getCountdown,
@@ -70,10 +71,7 @@ export default function ModernTemplate({ data, compact }: Props) {
   const travel = findDetail(data, "travel", "shuttle", "transport");
   const countdown = useCountdown(data.wedding_date, data.venue_details);
 
-  const mapsQuery = [venueOnly, data.location].filter(Boolean).join(", ");
-  const mapsUrl = mapsQuery
-    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapsQuery)}`
-    : null;
+  const mapsUrl = buildMapsUrl(venueOnly, data.location);
 
   const schedule = useMemo(() => {
     const items: { label: string; value: string }[] = [];
@@ -116,8 +114,14 @@ export default function ModernTemplate({ data, compact }: Props) {
     <div className="modern-invite modern-scroll">
       <section className="modern-screen modern-screen-hero">
         <ModernPaperScene />
-        <ModernFloralScene />
+        <ModernFloralScene scene="hero" />
         <div className="modern-hero relative z-10">
+          <div className="modern-fade modern-fade-1 modern-rule modern-rule-top" aria-hidden>
+            <span />
+            <i />
+            <span />
+          </div>
+
           <div className="modern-fade modern-fade-1 modern-mention">
             <p className="modern-mention-you">You&apos;re</p>
             <p className="modern-mention-script font-script">cordially</p>
@@ -125,9 +129,11 @@ export default function ModernTemplate({ data, compact }: Props) {
           </div>
 
           {marks.length > 0 ? (
-            <p className="modern-fade modern-fade-2 modern-monogram" aria-hidden>
-              {marks.join("  ·  ")}
-            </p>
+            <div className="modern-fade modern-fade-2 modern-monogram-row" aria-hidden>
+              <span className="modern-rule-arm" />
+              <p className="modern-monogram">{marks.join("  ·  ")}</p>
+              <span className="modern-rule-arm" />
+            </div>
           ) : null}
 
           {names ? (

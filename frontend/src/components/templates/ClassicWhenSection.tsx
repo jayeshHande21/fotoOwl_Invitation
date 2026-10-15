@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { ClassicDivider } from "@/components/templates/ClassicOrnament";
 import type { InvitationView } from "@/lib/templates";
+import { buildMapsUrl } from "@/lib/maps";
 import {
   buildEventDate,
   getCountdown,
@@ -41,10 +42,7 @@ export default function ClassicWhenSection({ data }: Props) {
   const travel = findDetail(data, "travel", "shuttle", "transport");
   const stay = findDetail(data, "stay", "hotel", "accommodation");
 
-  const mapsQuery = [venueLine, placeOnly].filter(Boolean).join(", ");
-  const mapsUrl = mapsQuery
-    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapsQuery)}`
-    : null;
+  const mapsUrl = buildMapsUrl(venueLine, placeOnly);
 
   const schedule = useMemo(() => {
     const items: { label: string; value: string }[] = [];
@@ -104,7 +102,7 @@ export default function ClassicWhenSection({ data }: Props) {
 
   const countdownBlock =
     countdown && !countdown.done ? (
-      <div className="classic-countdown mt-5 grid w-full max-w-[17rem] grid-cols-3 gap-2 sm:max-w-xs lg:mt-6 lg:w-full lg:max-w-[19rem]">
+      <div className="classic-countdown mt-4 grid w-full max-w-[17rem] grid-cols-3 gap-2 sm:mt-5 sm:max-w-xs lg:mt-6 lg:w-full lg:max-w-[19rem]">
         <CountdownTile value={countdown.days} label="Days" />
         <CountdownTile value={countdown.hours} label="Hours" />
         <CountdownTile value={countdown.minutes} label="Mins" />
@@ -112,16 +110,16 @@ export default function ClassicWhenSection({ data }: Props) {
     ) : null;
 
   return (
-    <div className="classic-when relative z-10 mx-auto flex w-full max-w-lg flex-col justify-center px-5 py-8 text-center sm:px-8 lg:min-h-[min(88svh,52rem)] lg:max-w-[68rem] lg:px-12 lg:py-10 xl:max-w-[74rem]">
+    <div className="classic-when relative z-10 mx-auto flex w-full max-w-lg flex-col justify-center px-5 py-5 text-center sm:px-8 sm:py-8 lg:min-h-[min(88svh,52rem)] lg:max-w-[68rem] lg:px-12 lg:py-10 xl:max-w-[74rem]">
       <div>
         <p className="font-display text-[0.75rem] font-medium uppercase tracking-[0.38em] text-[var(--ink)] sm:text-sm lg:text-[0.95rem]">
           <span className="lg:hidden">When</span>
           <span className="hidden lg:inline">When &amp; Where</span>
         </p>
-        <ClassicDivider emphasis className="mt-3 lg:mt-4" />
+        <ClassicDivider emphasis className="mt-2.5 lg:mt-4" />
       </div>
 
-      <div className="relative mt-7 grid w-full grid-cols-1 gap-8 lg:mt-9 lg:grid-cols-2 lg:items-stretch lg:gap-0 lg:text-left">
+      <div className="relative mt-5 grid w-full grid-cols-1 gap-5 sm:mt-7 sm:gap-8 lg:mt-9 lg:grid-cols-2 lg:items-stretch lg:gap-0 lg:text-left">
         <div className="flex flex-col items-center lg:items-start lg:px-8 xl:px-12">
           <p className="hidden text-[0.68rem] uppercase tracking-[0.32em] text-[var(--muted)] lg:block">
             When
@@ -135,7 +133,7 @@ export default function ClassicWhenSection({ data }: Props) {
 
           <div className="mt-1 flex items-end justify-center gap-3 lg:justify-start lg:gap-4">
             {parsed.day ? (
-              <p className="font-display text-[clamp(4.75rem,18vw,7.75rem)] leading-none tracking-[-0.04em] text-[var(--ink)]">
+              <p className="font-display text-[clamp(3.6rem,16vw,7.75rem)] leading-none tracking-[-0.04em] text-[var(--ink)]">
                 {parsed.day}
               </p>
             ) : (
@@ -223,32 +221,32 @@ export default function ClassicWhenSection({ data }: Props) {
 
       {/* Day schedule — fills lower empty band on laptop */}
       {schedule.length > 0 ? (
-        <div className="mt-8 border-t border-[rgba(28,25,23,0.1)] pt-6 lg:mt-10 lg:pt-8">
+        <div className="mt-5 border-t border-[rgba(28,25,23,0.1)] pt-4 sm:mt-8 sm:pt-6 lg:mt-10 lg:pt-8">
           <p className="text-[0.65rem] uppercase tracking-[0.3em] text-[var(--muted)]">
             Day schedule
           </p>
           <ul
-            className={`mx-auto mt-4 grid w-full list-none gap-5 p-0 sm:mt-5 ${
+            className={`mx-auto mt-3 grid w-full list-none gap-3 p-0 sm:mt-5 sm:gap-5 ${
               schedule.length === 1
                 ? "max-w-xs grid-cols-1"
                 : schedule.length === 2
-                  ? "max-w-xl grid-cols-1 sm:grid-cols-2"
-                  : "max-w-3xl grid-cols-1 sm:grid-cols-3"
+                  ? "max-w-xl grid-cols-2"
+                  : "max-w-3xl grid-cols-3"
             }`}
           >
             {schedule.map((item, i) => (
               <li
                 key={item.label}
-                className={`min-w-0 px-2 text-center ${
+                className={`min-w-0 px-1 text-center sm:px-2 ${
                   i > 0
-                    ? "border-t border-[rgba(28,25,23,0.1)] pt-5 sm:border-t-0 sm:border-l sm:pt-0 sm:pl-5"
+                    ? "border-l border-[rgba(28,25,23,0.1)] pl-2 sm:pl-5"
                     : ""
                 }`}
               >
-                <p className="text-[0.62rem] uppercase tracking-[0.26em] text-[var(--muted)]">
+                <p className="text-[0.58rem] uppercase tracking-[0.22em] text-[var(--muted)] sm:text-[0.62rem] sm:tracking-[0.26em]">
                   {item.label}
                 </p>
-                <p className="font-display mt-2 text-[1.15rem] text-[var(--ink)] sm:text-[1.25rem]">
+                <p className="font-display mt-1.5 text-[1.02rem] text-[var(--ink)] sm:mt-2 sm:text-[1.25rem]">
                   {item.value}
                 </p>
               </li>

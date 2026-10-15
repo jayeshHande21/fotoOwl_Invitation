@@ -6,6 +6,7 @@ import GardenButterflies, {
   splitCoupleNames,
 } from "@/components/templates/GardenButterflies";
 import type { InvitationView } from "@/lib/templates";
+import { buildMapsUrl } from "@/lib/maps";
 import {
   parseCeremonyLabel,
   parseWeddingDate,
@@ -75,6 +76,7 @@ export default function GardenTemplate({ data, compact }: Props) {
 
   const stayTravel = data.extra_details.filter((d) => TRAVEL_STAY.test(d.label));
   const guestNotes = data.extra_details.filter((d) => !TRAVEL_STAY.test(d.label));
+  const mapsUrl = buildMapsUrl(venueOnly, data.location);
 
   if (compact) {
     return (
@@ -225,6 +227,17 @@ export default function GardenTemplate({ data, compact }: Props) {
                       </li>
                     ))}
                   </ul>
+                ) : null}
+
+                {mapsUrl ? (
+                  <a
+                    href={mapsUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-6 inline-flex text-[0.68rem] uppercase tracking-[0.24em] text-[#3d5c45] underline decoration-[rgba(95,138,104,0.45)] underline-offset-[0.35em] transition-opacity hover:opacity-70"
+                  >
+                    View on map
+                  </a>
                 ) : null}
               </div>
             </div>
