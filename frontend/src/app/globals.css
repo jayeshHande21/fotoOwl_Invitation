@@ -1891,12 +1891,17 @@ body {
 }
 
 .modern-flora-back {
-  opacity: 0.42;
-  filter: blur(1.4px);
+  opacity: 0.95;
+  filter: blur(14px);
+  mix-blend-mode: multiply;
+}
+
+.modern-flora-back .modern-flora-img {
+  mix-blend-mode: normal;
 }
 
 .modern-flora-front {
-  opacity: 0.94;
+  opacity: 0.96;
 }
 
 /* Hero — sprigs rooted at both lower edges */
@@ -1921,16 +1926,30 @@ body {
   mask-image: linear-gradient(270deg, #000 62%, transparent 96%);
 }
 
+.modern-flora-hero-left.modern-flora-back,
+.modern-flora-hero-right.modern-flora-back {
+  width: min(36vw, 24rem);
+  height: 116%;
+  bottom: -2%;
+}
+
 .modern-flora-hero-left.modern-flora-back {
-  animation: modern-flora-sway-back 8.4s ease-in-out infinite;
+  left: 0;
+  -webkit-mask-image: linear-gradient(90deg, #000 58%, transparent 96%);
+  mask-image: linear-gradient(90deg, #000 58%, transparent 96%);
+  animation: modern-flora-shadow-left 9s ease-in-out infinite;
+}
+
+.modern-flora-hero-right.modern-flora-back {
+  right: 0;
+  left: auto;
+  -webkit-mask-image: linear-gradient(270deg, #000 58%, transparent 96%);
+  mask-image: linear-gradient(270deg, #000 58%, transparent 96%);
+  animation: modern-flora-shadow-right 9.6s ease-in-out infinite;
 }
 
 .modern-flora-hero-left.modern-flora-front {
   animation: modern-flora-sway-front 6.6s ease-in-out infinite;
-}
-
-.modern-flora-hero-right.modern-flora-back {
-  animation: modern-flora-sway-front 7.8s ease-in-out infinite reverse;
 }
 
 .modern-flora-hero-right.modern-flora-front {
@@ -1971,34 +1990,33 @@ body {
   animation: modern-flora-sway-front 8s ease-in-out infinite;
 }
 
-/* Notes — cherry drifts along the top; bloom pools in the lower left */
-.modern-flora-canopy {
-  top: -18%;
-  right: -4%;
-  height: 58%;
+/* Notes — the bloom cluster is rooted in the lower left, stems dissolving upward */
+.modern-flora-pool {
+  left: 0;
+  bottom: -2%;
+  height: 74%;
   width: min(36vw, 24rem);
-  transform-origin: 80% 12%;
-  -webkit-mask-image: radial-gradient(ellipse 66% 70% at 78% 74%, #000 14%, transparent 70%);
-  mask-image: radial-gradient(ellipse 66% 70% at 78% 74%, #000 14%, transparent 70%);
-  animation: modern-flora-drift 11s ease-in-out infinite;
+  transform-origin: 12% 96%;
+  -webkit-mask-image:
+    linear-gradient(90deg, #000 42%, transparent 82%),
+    linear-gradient(to top, #000 52%, transparent);
+  mask-image:
+    linear-gradient(90deg, #000 42%, transparent 82%),
+    linear-gradient(to top, #000 52%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
 }
 
-.modern-flora-canopy .modern-flora-img {
+.modern-flora-pool .modern-flora-img {
   object-position: right bottom;
 }
 
-.modern-flora-pool {
-  left: -4%;
-  bottom: -16%;
-  height: 64%;
-  width: min(34vw, 22rem);
-  transform-origin: 20% 100%;
-  -webkit-mask-image: linear-gradient(90deg, #000 50%, transparent 90%);
-  mask-image: linear-gradient(90deg, #000 50%, transparent 90%);
-}
-
 .modern-flora-pool.modern-flora-back {
-  animation: modern-flora-sway-back 9.2s ease-in-out infinite;
+  width: min(46vw, 30rem);
+  height: 86%;
+  left: -8%;
+  bottom: -6%;
+  animation: modern-flora-shadow-left 10s ease-in-out infinite;
 }
 
 .modern-flora-pool.modern-flora-front {
@@ -2018,6 +2036,26 @@ body {
 
 .modern-flora-compact .modern-flora-front {
   opacity: 0.82;
+}
+
+@keyframes modern-flora-shadow-left {
+  0%,
+  100% {
+    transform: translate3d(4%, 2%, 0) rotate(-1.6deg) scale(1.16);
+  }
+  50% {
+    transform: translate3d(8%, -1.5%, 0) rotate(2.4deg) scale(1.22);
+  }
+}
+
+@keyframes modern-flora-shadow-right {
+  0%,
+  100% {
+    transform: translate3d(-4%, 2%, 0) rotate(1.6deg) scale(1.16);
+  }
+  50% {
+    transform: translate3d(-8%, -1.5%, 0) rotate(-2.4deg) scale(1.22);
+  }
 }
 
 @keyframes modern-flora-sway-back {
@@ -2567,10 +2605,13 @@ p.modern-ceremony {
   .modern-flora-hero-left,
   .modern-flora-hero-right,
   .modern-flora-hang,
-  .modern-flora-rise,
-  .modern-flora-canopy,
-  .modern-flora-pool {
+  .modern-flora-rise {
     width: min(34vw, 9rem);
+  }
+
+  .modern-flora-pool {
+    width: min(52vw, 14rem);
+    height: 58%;
   }
 
   .modern-flora-hero-left {
@@ -2732,6 +2773,12 @@ p.modern-ceremony {
     height: 116%;
   }
 
+  .modern-flora-hero-left.modern-flora-back,
+  .modern-flora-hero-right.modern-flora-back {
+    width: min(28vw, 24rem);
+    height: 122%;
+  }
+
   .modern-sheet {
     width: min(72rem, 86vw);
     padding: 2.35rem 3.25rem 1.7rem;
@@ -2749,15 +2796,19 @@ p.modern-ceremony {
     font-size: clamp(2.35rem, 2.8vw, 3.15rem);
   }
 
-  .modern-flora-hang,
-  .modern-flora-canopy {
+  .modern-flora-hang {
     width: min(28vw, 24rem);
   }
 
-  .modern-flora-rise,
-  .modern-flora-pool {
+  .modern-flora-rise {
     width: min(26vw, 22rem);
     height: 82%;
+  }
+
+  .modern-flora-pool {
+    width: min(28vw, 26rem);
+    height: 78%;
+    bottom: 0;
   }
 }
 

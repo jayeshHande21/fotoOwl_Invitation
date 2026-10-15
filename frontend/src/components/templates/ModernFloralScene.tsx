@@ -10,7 +10,7 @@ const BLOOM = "/templates/modern/bloom-right.png";
 
 /**
  * Pink sprigs only. Each screen places them differently:
- * hero frames both edges, details hangs from the top, notes drifts across the base.
+ * hero frames both edges, details rises at the lower right, notes pools in the lower left.
  */
 export default function ModernFloralScene({ compact, scene = "hero" }: Props) {
   if (compact) {
@@ -37,16 +37,11 @@ export default function ModernFloralScene({ compact, scene = "hero" }: Props) {
       ) : null}
 
       {scene === "details" ? (
-        <>
-          <Sprig className="modern-flora-hang modern-flora-back" src={BLOOM} flip />
-          <Sprig className="modern-flora-hang modern-flora-front" src={BLOOM} flip />
-          <Sprig className="modern-flora-rise modern-flora-front" src={CHERRY} />
-        </>
+        <Sprig className="modern-flora-rise modern-flora-front" src={CHERRY} />
       ) : null}
 
       {scene === "notes" ? (
         <>
-          <Sprig className="modern-flora-canopy modern-flora-front" src={CHERRY} />
           <Sprig className="modern-flora-pool modern-flora-back" src={BLOOM} flip />
           <Sprig className="modern-flora-pool modern-flora-front" src={BLOOM} flip />
         </>
